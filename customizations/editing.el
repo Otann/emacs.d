@@ -73,19 +73,19 @@
 
 ;; OSX modifier keys
 (when (eq system-type 'darwin)
-  ;; Keybonds
-  (global-set-key [(hyper a)] 'mark-whole-buffer)
-  (global-set-key [(hyper v)] 'yank)
-  (global-set-key [(hyper c)] 'kill-ring-save)
-  (global-set-key [(hyper s)] 'save-buffer)
-  (global-set-key [(hyper l)] 'goto-line)
-  (global-set-key [(hyper w)]
-                  (lambda () (interactive) (delete-window)))
-  (global-set-key [(hyper z)] 'undo)
-   
   ;; mac switch meta key
   (setq mac-option-modifier 'meta)
   (setq mac-command-modifier 'hyper)
+
+  ;; Keybindings
+  (global-set-key (kbd "H-a") 'mark-whole-buffer)
+  (global-set-key (kbd "H-v") 'yank)
+  (global-set-key (kbd "H-c") 'kill-ring-save)
+  (global-set-key (kbd "H-x") 'kill-region)
+  (global-set-key (kbd "H-s") 'save-buffer)
+  (global-set-key (kbd "H-l") 'goto-line)
+  (global-set-key (kbd "H-w") (lambda () (interactive) (kill-buffer)))
+  (global-set-key (kbd "H-z") 'undo)
 )
 
 
