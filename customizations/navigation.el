@@ -47,7 +47,7 @@
 (ido-ubiquitous-mode 1)
 
 ;; Shows a list of buffers
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "H-e") 'ibuffer)
 ;; Switch to Mac Fullscreen space
 (global-set-key (kbd "H-f") 'toggle-frame-fullscreen)
 
@@ -62,4 +62,14 @@
 (projectile-global-mode)
 
 ;; use Shift+arrow_keys to move cursor around split panes
-(windmove-default-keybindings)
+;(windmove-default-keybindings)
+
+;; Bind movements around panels
+(global-set-key (kbd "H-<right>") 'windmove-right)
+(global-set-key (kbd "H-<left>")  'windmove-left)
+(global-set-key (kbd "H-<up>")    'windmove-up)
+(global-set-key (kbd "H-<down>")  'windmove-down)
+
+;; Even closing things
+(global-set-key (kbd "H-w") (lambda () (interactive) (kill-buffer)))
+(global-set-key (kbd "H-q") 'save-buffers-kill-terminal)

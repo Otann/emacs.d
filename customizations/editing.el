@@ -51,9 +51,6 @@
   (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
 (global-set-key (kbd "C-;") 'toggle-comment-on-line)
 
-;; yay rainbows!
-(global-rainbow-delimiters-mode t)
-
 ;; use 2 spaces for tabs
 (defun die-tabs ()
   (interactive)
@@ -84,7 +81,6 @@
   (global-set-key (kbd "H-x") 'kill-region)
   (global-set-key (kbd "H-s") 'save-buffer)
   (global-set-key (kbd "H-l") 'goto-line)
-  (global-set-key (kbd "H-w") (lambda () (interactive) (kill-buffer)))
   (global-set-key (kbd "H-z") 'undo)
 )
 

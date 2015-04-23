@@ -26,11 +26,13 @@
 ;; for a more technical explanation.
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (add-to-list 'load-path "~/.emacs.d/themes")
-;; (load-theme 'tomorrow-night-bright t)
-(custom-set-variables
- '(custom-safe-themes '("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default))
- '(frame-background-mode 'light))
-(load-theme 'solarized)
+(load-theme 'tomorrow-night-bright t)
+
+;; Custom theme
+;; (custom-set-variables
+;;  '(custom-safe-themes '("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default))
+;;  '(frame-background-mode 'light))
+;; (load-theme 'solarized)
 
 
 ;; increase font size for better readability
@@ -44,9 +46,6 @@
 ;; Hide toolbar for emacs-mac
 (tool-bar-mode 0)
 (setq ns-auto-hide-menu-bar t)
-
-;; Switch to Mac Fullscreen space
-(global-set-key (kbd "C-c C-f") 'toggle-frame-fullscreen)
 
 ;; These settings relate to how emacs interacts with your operating system
 (setq ;; makes killing/yanking interact with the clipboard
