@@ -26,7 +26,12 @@
 ;; for a more technical explanation.
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (add-to-list 'load-path "~/.emacs.d/themes")
-(load-theme 'tomorrow-night-bright t)
+;; (load-theme 'tomorrow-night-bright t)
+(custom-set-variables
+ '(custom-safe-themes '("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default))
+ '(frame-background-mode 'light))
+(load-theme 'solarized)
+
 
 ;; increase font size for better readability
 (set-face-attribute 'default nil :height 120)
