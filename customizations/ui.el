@@ -20,19 +20,19 @@
   (scroll-bar-mode -1))
 
 ;; Color Themes
-;; Read http://batsov.com/articles/2012/02/19/color-theming-in-emacs-reloaded/
-;; for a great explanation of emacs color themes.
-;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Custom-Themes.html
-;; for a more technical explanation.
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(add-to-list 'load-path "~/.emacs.d/themes")
-(load-theme 'tomorrow-night-bright t)
+;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+;(add-to-list 'load-path "~/.emacs.d/themes")
 
+;; manually load tomorrow theme
+;(require 'color-theme-tomorrow)
+;(color-theme-tomorrow--define-theme day)
+
+;(load-theme 'zenburn t)
 ;; Custom theme
-;; (custom-set-variables
-;;  '(custom-safe-themes '("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default))
-;;  '(frame-background-mode 'light))
-;; (load-theme 'solarized)
+(custom-set-variables
+ '(custom-safe-themes '("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default))
+ '(frame-background-mode 'light))
+(load-theme 'solarized)
 
 
 ;; increase font size for better readability
@@ -78,3 +78,14 @@
 
 ;; no bell
 (setq ring-bell-function 'ignore)
+
+;; Customize neo-tree look and feel
+(require 'neotree)
+(setq neo-banner-message "")
+(setq neo-theme 'arrow)
+(setq neo-show-hidden-files t)
+(setq neo-mode-line-type 'neotree)
+
+; cant figure why this does not apply
+(setq neo-vc-integration '('char 'face))
+

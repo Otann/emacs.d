@@ -67,7 +67,15 @@
 
     ;; tree view
     neotree
+
+    ;; theme
+    color-theme-solarized
     ))
+;; TODO:
+; packages to check
+; - helm (https://emacs-helm.github.io/helm/)
+; - speedbar
+
 
 ;; On OS X, an Emacs instance started from the graphical user
 ;; interface will have a different environment than a shell in a
@@ -142,7 +150,7 @@
  '(coffee-tab-width 2)
  '(custom-safe-themes
    (quote
-    ("0c311fb22e6197daba9123f43da98f273d2bfaeeaeb653007ad1ee77f0003037" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
+    ("685f9488bc3670c4080eb2c561969ed7fe815f0631ae4aff17460a7a189c724a" "0c311fb22e6197daba9123f43da98f273d2bfaeeaeb653007ad1ee77f0003037" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
  '(frame-background-mode (quote light)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

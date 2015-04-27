@@ -48,8 +48,11 @@
 
 ;; Shows a list of buffers
 (global-set-key (kbd "H-e") 'ibuffer)
+;; Shows a tree view
+(global-set-key (kbd "H-t") 'neotree-toggle)
 ;; Switch to Mac Fullscreen space
 (global-set-key (kbd "H-f") 'toggle-frame-fullscreen)
+
 
 ;; Enhances M-x to allow easier execution of commands. Provides
 ;; a filterable list of possible commands in the minibuffer
@@ -73,3 +76,9 @@
 ;; Even closing things
 (global-set-key (kbd "H-w") (lambda () (interactive) (kill-buffer)))
 (global-set-key (kbd "H-q") 'save-buffers-kill-terminal)
+
+;; plugin guide-key setup
+(require 'guide-key)
+(setq guide-key/idle-delay 1)
+(setq guide-key/guide-key-sequence t)
+(guide-key-mode 1)  ; Enable guide-key-mode

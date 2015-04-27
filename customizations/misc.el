@@ -1,3 +1,9 @@
+;; load ergomacs mode
+;(require 'ergoemacs-mode)
+;(setq ergoemacs-theme "lvl3")
+;(setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
+;(ergoemacs-mode 1)
+
 ;; Changes all yes/no questions to y/n type
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -10,3 +16,7 @@
 
 ;; Go straight to scratch buffer on startup
 (setq inhibit-startup-message t)
+
+;; Toying around
+;(setq frame-title-format "GNU Emacs: %b")
+
