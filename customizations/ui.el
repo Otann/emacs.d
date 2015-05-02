@@ -22,7 +22,8 @@
 ;; Color Theme
 (setq solarized-high-contrast-mode-line t)
 (setq solarized-distinct-fringe-background nil)
-(load-theme 'solarized-light t)
+;(load-theme 'solarized-light t)
+(load-theme 'solarized-dark t)
 
 ;; increase font size for better readability
 (set-face-attribute 'default nil :height 120)
