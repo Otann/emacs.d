@@ -11,18 +11,19 @@
   '(:propertize
     (:eval (when (ignore-errors (projectile-project-root))
              (concat " " (projectile-project-name) " ")))
-    face font-lock-constant-face)                                      ;; style for Project modeline
+    face match)                                      ;; style for Project modeline
   "Mode line format for Projectile.")
 (put 'otann-projectile-mode-line 'risky-local-variable t)
 
 ;; Custom window number
+
 (defvar otann-window-number-mode-line
   '(:propertize
     (:eval (concat " " (window-numbering-get-number-string) " "))
-    face dired-efap-face)
+    face lazy-highlight)
   "Mode line format for Window number")
 (put 'otann-window-number-mode-line 'risky-local-variable t)
-
+ 
 (setq-default mode-line-format
               '("%e" mode-line-front-space
                 otann-window-number-mode-line " "
@@ -38,3 +39,4 @@
                 ;; And the modes, which I don't really care for anyway
                 " " mode-line-modes mode-line-end-spaces
                 ))
+

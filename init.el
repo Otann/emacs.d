@@ -35,19 +35,9 @@
     ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
     paredit
 
-    ;; key bindings and code colorization for Clojure
-    ;; https://github.com/clojure-emacs/clojure-mode
-    clojure-mode
-
-    ;; extra syntax highlighting for clojure
-    clojure-mode-extra-font-locking
-
-    ;; integration with a Clojure REPL
-    ;; https://github.com/clojure-emacs/cider
-    cider
-
-    ;; allow ido usage in as many contexts as possible
-    ido-ubiquitous
+    ;; Make completions
+    ido-ubiquitous ; allow ido usage in as many contexts as possible
+    ido-vertical-mode
 
     ;; Enhances M-x to allow easier execution of commands. Provides
     ;; a filterable list of possible commands in the minibuffer
@@ -66,18 +56,36 @@
     ;; tree view
     neotree
 
+    ;; Prograaming languages spellchecking
+    flyspell
+
+    ;; key bindings and code colorization for Clojure
+    ;; https://github.com/clojure-emacs/clojure-mode
+    clojure-mode
+
+    ;; extra syntax highlighting for clojure
+    clojure-mode-extra-font-locking
+
+    ;; integration with a Clojure REPL
+    ;; https://github.com/clojure-emacs/cider
+    cider
+
     ;; theme
     solarized-theme
 
     ;; modes
     yaml-mode
 
+    ;; Javascript development
+    web-mode ; mode which can handle mixed js and html like jsx
+    js2-mode ; nice js editing mode which recognizes modern ES6+ features
+    json-mode
+
     ;; assign number to each window
     window-numbering
     ))
 ;; TODO:
 ; packages to check
-; - helm (https://emacs-helm.github.io/helm/)
 ; - speedbar
 ; - ediff ; (setq ediff-split-window-function 'split-window-horizontally)
 ; - auto-complete & company-mode
@@ -152,6 +160,7 @@
 (load "elisp-editing.el")
 
 ;; Langauage-specific
+(load "setup-dev.el")
 (load "setup-clojure.el")
 (load "setup-js.el")
 
