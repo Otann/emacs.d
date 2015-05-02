@@ -46,9 +46,7 @@
     ;; https://github.com/clojure-emacs/cider
     cider
 
-    ;; allow ido usage in as many contexts as possible. see
-    ;; customizations/navigation.el line 23 for a description
-    ;; of ido
+    ;; allow ido usage in as many contexts as possible
     ido-ubiquitous
 
     ;; Enhances M-x to allow easier execution of commands. Provides
@@ -69,12 +67,26 @@
     neotree
 
     ;; theme
-    color-theme-solarized
+    solarized-theme
+
+    ;; modes
+    yaml-mode
+
+    ;; assign number to each window
+    window-numbering
     ))
 ;; TODO:
 ; packages to check
 ; - helm (https://emacs-helm.github.io/helm/)
 ; - speedbar
+; - ediff ; (setq ediff-split-window-function 'split-window-horizontally)
+; - auto-complete & company-mode
+; 
+; - Дмитрий Бушенко. Изучаем Emacs
+;
+; - powerline (https://github.com/milkypostman/powerline)
+; - http://www.emacswiki.org/emacs/DelightedModes
+
 
 
 ;; On OS X, an Emacs instance started from the graphical user
@@ -133,6 +145,9 @@
 ;; Hard-to-categorize customizations
 (load "misc.el")
 
+;; Load custom modeline
+(load "modeline.el")
+
 ;; For editing lisps
 (load "elisp-editing.el")
 
@@ -142,19 +157,10 @@
 
 ;; Following was added during runtime
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(coffee-tab-width 2)
- '(custom-safe-themes
-   (quote
-    ("685f9488bc3670c4080eb2c561969ed7fe815f0631ae4aff17460a7a189c724a" "0c311fb22e6197daba9123f43da98f273d2bfaeeaeb653007ad1ee77f0003037" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
- '(frame-background-mode (quote light)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+

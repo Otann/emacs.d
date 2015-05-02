@@ -19,21 +19,10 @@
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
 
-;; Color Themes
-;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-;(add-to-list 'load-path "~/.emacs.d/themes")
-
-;; manually load tomorrow theme
-;(require 'color-theme-tomorrow)
-;(color-theme-tomorrow--define-theme day)
-
-;(load-theme 'zenburn t)
-;; Custom theme
-(custom-set-variables
- '(custom-safe-themes '("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default))
- '(frame-background-mode 'light))
-(load-theme 'solarized)
-
+;; Color Theme
+(setq solarized-high-contrast-mode-line t)
+(setq solarized-distinct-fringe-background nil)
+(load-theme 'solarized-light t)
 
 ;; increase font size for better readability
 (set-face-attribute 'default nil :height 120)

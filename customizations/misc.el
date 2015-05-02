@@ -19,4 +19,12 @@
 
 ;; Toying around
 ;(setq frame-title-format "GNU Emacs: %b")
+; mode-line-format
+; header-line-format
+; 
+; face mode-line
+; face mode-line-inactive
 
+;; Magit & Ediff
+(setq magit-last-seen-setup-instructions "1.4.0")
+(setq ediff-split-window-function 'split-window-horizontally)

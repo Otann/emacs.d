@@ -64,6 +64,9 @@
 ;; projectile everywhere!
 (projectile-global-mode)
 
+;; assign number for each window
+(window-numbering-mode)
+
 ;; use Shift+arrow_keys to move cursor around split panes
 ;(windmove-default-keybindings)
 
