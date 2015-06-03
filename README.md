@@ -3,6 +3,11 @@
 If you're new to emacs, check out
 [this introductory tutorial](http://www.braveclojure.com/basic-emacs/)!
 
+## Personal Sruff
+
+Bottom section of `init.el` contains key to my WakaTime profile.  
+Please replace it with yours
+
 ## Organization
 
 I've tried to separate everything logically and document the purpose

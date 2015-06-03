@@ -59,6 +59,9 @@
     ;; Prograaming languages spellchecking
     flyspell
 
+    ;; Autocomplete
+    company
+
     ;; key bindings and code colorization for Clojure
     ;; https://github.com/clojure-emacs/clojure-mode
     clojure-mode
@@ -75,6 +78,8 @@
 
     ;; modes
     yaml-mode
+    diff-hl
+    wakatime-mode
 
     ;; Javascript development
     web-mode ; mode which can handle mixed js and html like jsx
@@ -173,3 +178,12 @@
  ;; If there is more than one, they won't work right.
  )
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(global-wakatime-mode t)
+ '(magit-use-overlays nil)
+ '(wakatime-api-key "d978e097-1625-43bb-a887-0bc47c8c1556")
+ '(wakatime-cli-path "/usr/local/bin/wakatime"))

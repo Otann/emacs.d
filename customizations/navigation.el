@@ -63,9 +63,9 @@
 ;; Shows a list of buffers
 (global-set-key (kbd "H-e") 'ibuffer)
 ;; Shows a tree view
-(global-set-key (kbd "H-t") 'neotree-toggle)
+(global-set-key (kbd "H-p") 'neotree-toggle)
 ;; Switch to Mac Fullscreen space
-(global-set-key (kbd "H-f") 'toggle-frame-fullscreen)
+(global-set-key (kbd "H-F") 'toggle-frame-fullscreen)
 
 ;; projectile everywhere!
 (projectile-global-mode)

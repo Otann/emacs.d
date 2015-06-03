@@ -15,8 +15,15 @@
 ;; Highlights matching parenthesis
 (show-paren-mode 1)
 
+;; inserting long dash mac-style
+(defconst en-dash (decode-char 'ucs #x2013))
+(global-set-key [(meta -)] (lambda () (interactive) (insert en-dash)))
+
 ;; Highlight current line
 (global-hl-line-mode 1)
+
+;; Make cursor box ('bar or 'hollow are possible)
+(setq-default cursor-type 'box)
 
 ;; Interactive search key bindings. By default, C-s runs
 ;; isearch-forward, so this swaps the bindings.
@@ -27,6 +34,10 @@
 
 ;; Don't use hard tabs
 (setq-default indent-tabs-mode nil)
+
+;; Allow quickly switch truncation mode
+(global-set-key (kbd "H-t") 'toggle-truncate-lines)
+
 
 ;; When you visit a file, point goes to the last place where it
 ;; was when you previously visited the same file.
