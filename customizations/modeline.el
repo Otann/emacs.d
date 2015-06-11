@@ -7,12 +7,13 @@
 
 ;; Abbreviate or hide minor modes names
 (require 'delight)
-(delight '((emacs-lisp-mode "ELisp" lisp-mode)
-           (js-mode "JS" js)
-           (js2-mode "JS2" js2-mode)
-           (web-mode "Web" web-mode)
-           (gfm-mode "MD" markdown-mode)
-           (clojure-mode "λ" clojure-mode)
+(delight '((emacs-lisp-mode "ELisp " lisp-mode)
+           (js-mode "JS " js)
+           (js2-mode "JS2 " js2-mode)
+           (web-mode "Web " web-mode)
+           (gfm-mode "MD " markdown-mode)
+           (clojure-mode "λλ " clojure-mode)
+           (js2-refactor-mode "Ⓡ" js2-refactor)
            (paredit-mode "ⓟ" paredit)
            (flycheck-mode "ⓕ" flycheck)
            (subword-mode "ⓢ" subword)
@@ -22,6 +23,7 @@
            (guide-key-mode nil guide-key)
            (eldoc-mode nil "eldoc")
            (visual-line-mode nil simple)
+           (yas-minor-mode nil yasnippet)
            (wakatime-mode)
            ))
 
