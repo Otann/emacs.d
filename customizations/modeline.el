@@ -7,30 +7,30 @@
 
 ;; Abbreviate or hide minor modes names
 (require 'delight)
-(delight '((paredit-mode " ✱" paredit)
-           (flycheck-mode nil flycheck)
-           (projectile-mode " ≣" projectile)
-           (company-mode nil company)
+(delight '((emacs-lisp-mode "ELisp" lisp-mode)
+           (js-mode "JS" js)
+           (js2-mode "JS2" js2-mode)
+           (web-mode "Web" web-mode)
+           (gfm-mode "MD" markdown-mode)
+           (clojure-mode "λ" clojure-mode)
+           (paredit-mode "ⓟ" paredit)
+           (flycheck-mode "ⓕ" flycheck)
+           (subword-mode "ⓢ" subword)
+           (company-mode "ⓒ" company)
+           (auto-complete-mode "ⓒ" auto-complete)
+           (projectile-mode nil projectile)
            (guide-key-mode nil guide-key)
            (eldoc-mode nil "eldoc")
-           (subword-mode " ≃" subword)
+           (visual-line-mode nil simple)
            (wakatime-mode)
-           (flycheck-mode)))
-
-;(eval-after-load "paredit"    '(diminish 'paredit-mode " (:)"))
-;(eval-after-load "flycheck"   '(diminish 'flycheck-mode))
-;(eval-after-load "company"    '(diminish 'company-mode))
-;(eval-after-load "projectile" '(diminish 'projectile-mode))
-;(eval-after-load "guide-key"  '(diminish 'guide-key-mode))
-
+           ))
 
 ;; Customise display of position in file
 (setq line-number-mode t)
 (setq column-number-mode t)
 (setq-default mode-line-position
-              '((-3 "%p") 
-                (size-indication-mode ("/" (-4 "%I")))
-                " "
+              '(;(-3 "%p") ; Top / Bot / 34%
+                ;(size-indication-mode ("/" (-4 "%I")))
                 (line-number-mode ("%l" (column-number-mode ":%c")))))
 
 ;; Custom field for projectile
@@ -50,11 +50,30 @@
   "Mode line format for Window number")
 (put 'otann-window-number-mode-line 'risky-local-variable t)
 
+(setq flycheck-mode-line
+      '(:eval
+        (pcase flycheck-last-status-change
+          (`not-checked nil)
+          (`no-checker (propertize " - " 'face 'flycheck-fringe-warning))
+          (`running (propertize " ✷ " 'face 'mode-line))
+          (`errored (propertize " ! " 'face 'flycheck-fringe-error))
+          (`finished
+           (let* ((error-counts (flycheck-count-errors flycheck-current-errors))
+                  (no-errors (cdr (assq 'error error-counts)))
+                  (no-warnings (cdr (assq 'warning error-counts)))
+                  (face (cond (no-errors 'flycheck-fringe-error)
+                              (no-warnings 'flycheck-fringe-warning)
+                              (t 'mode-line))))
+             (propertize (format " %s/%s " (or no-errors 0) (or no-warnings 0))
+                         'face face)))
+          (`interrupted " - ")
+          (`suspicious '(propertize " ? " 'face 'flycheck-fringe-warning)))))
+
 (defvar otann-vc-mode-line
   '(" " (:propertize
          ;; Strip the backend name from the VC status information
          (:eval (let ((backend (symbol-name (vc-backend (buffer-file-name)))))
-                  (concat " " (substring vc-mode (+ (length backend) 2)) " ")))
+                  (substring vc-mode (+ (length backend) 2))))
          face modeline))
   "Mode line format for VC Mode.")
 (put 'otann-vc-mode-line 'risky-local-variable t)
@@ -69,7 +88,7 @@
                 mode-line-buffer-identification " " 
 
                 otann-projectile-mode-line             ; Project information
-                (vc-mode otann-vc-mode-line)           ; Branch information
+                (vc-mode otann-vc-mode-line) " "       ; Branch information
 
                 (flycheck-mode flycheck-mode-line) " " ; Flycheck status
                 mode-line-position " "                 ; line number
