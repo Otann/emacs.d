@@ -74,7 +74,3 @@
 (setq neo-theme 'arrow)
 (setq neo-show-hidden-files t)
 (setq neo-mode-line-type 'neotree)
-
-; cant figure why this does not apply
-(setq neo-vc-integration '('char 'face))
-

@@ -59,15 +59,18 @@
     ;; Prograaming languages spellchecking
     flyspell
 
-    ;; Autocomplete
-    company
-
     ;; extra syntax highlighting for clojure
     clojure-mode-extra-font-locking
 
     ;; integration with a Clojure REPL
     ;; https://github.com/clojure-emacs/cider
     cider
+
+    ;; Autocomplete
+    ;company
+    auto-complete
+    ac-js2
+    ac-cider
 
     ;; theme
     solarized-theme
@@ -82,6 +85,7 @@
     ;; Javascript development
     web-mode ; mode which can handle mixed js and html like jsx
     js2-mode ; nice js editing mode which recognizes modern ES6+ features
+    js2-refactor
     json-mode
 
     ;; assign number to each window
