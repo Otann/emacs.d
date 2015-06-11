@@ -46,3 +46,12 @@
 ;;      (require 'tagedit)
 ;;      (tagedit-add-paredit-like-keybindings)
 ;;      (add-hook 'html-mode-hook (lambda () (tagedit-mode 1)))))
+
+;; Set position of flycheck window
+(add-to-list 'display-buffer-alist
+             `(,(rx bos "*Flycheck errors*" eos)
+               (display-buffer-reuse-window
+                display-buffer-in-side-window)
+               (reusable-frames . visible)
+               (side            . bottom)
+               (window-height   . 0.4)))
