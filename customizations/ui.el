@@ -1,9 +1,13 @@
+;;; package --- Summary
+;;; Commentary:
 ;; These customizations change the way emacs looks and disable/enable
 ;; some user interface elements. Some useful customizations are
 ;; commented out, and begin with the line "CUSTOMIZE". These are more
 ;; a matter of preference and may require some fiddling to match your
 ;; preferences
 
+
+;;; Code:
 ;; Turn off the menu bar at the top of each frame because it's distracting
 (menu-bar-mode -1)
 
@@ -21,7 +25,7 @@
 (load-theme 'solarized-dark t)
 
 ;; increase font size for better readability
-(set-face-attribute 'default nil :height 140)
+(set-face-attribute 'default nil :height 120)
 
 ;; Uncomment the lines below by removing semicolons and play with the
 ;; values in order to set the width (in characters wide) and height

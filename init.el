@@ -47,8 +47,8 @@
     ;; project navigation
     projectile
 
-    ;; edit html tags like sexps
-    tagedit
+    ;; Fight minor modes clutter
+    delight
 
     ;; git integration
     magit
@@ -62,10 +62,6 @@
     ;; Autocomplete
     company
 
-    ;; key bindings and code colorization for Clojure
-    ;; https://github.com/clojure-emacs/clojure-mode
-    clojure-mode
-
     ;; extra syntax highlighting for clojure
     clojure-mode-extra-font-locking
 
@@ -76,7 +72,9 @@
     ;; theme
     solarized-theme
 
-    ;; modes
+    ;; major modes
+    tagedit           ; edit html tags like sexps
+    clojure-mode      ; https://github.com/clojure-emacs/clojure-mode
     yaml-mode
     diff-hl
     wakatime-mode
