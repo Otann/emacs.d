@@ -23,7 +23,11 @@
                ("(\\(background?\\)"
                 (1 font-lock-keyword-face))))
             (define-clojure-indent (fact 1))
-            (define-clojure-indent (facts 1))))
+            (define-clojure-indent (facts 1))
+            ;; Activate the folding mode
+            (hs-minor-mode t)
+            ;; Enable code folding
+            (hideshowvis-enable)))
 
 ;;;;
 ;; Cider

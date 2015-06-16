@@ -67,10 +67,13 @@
     cider
 
     ;; Autocomplete
-    ;company
-    auto-complete
-    ac-js2
-    ac-cider
+    company
+    ;auto-complete
+    ;ac-js2
+    ;ac-cider
+
+    ;; Code Folding
+    hideshowvis
 
     ;; theme
     solarized-theme
@@ -95,12 +98,8 @@
 ; packages to check
 ; - speedbar
 ; - ediff ; (setq ediff-split-window-function 'split-window-horizontally)
-; - auto-complete & company-mode
-; 
 ; - Дмитрий Бушенко. Изучаем Emacs
-;
 ; - powerline (https://github.com/milkypostman/powerline)
-; - http://www.emacswiki.org/emacs/DelightedModes
 
 
 

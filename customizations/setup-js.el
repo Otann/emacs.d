@@ -15,6 +15,16 @@
 (add-hook 'js2-mode-hook #'js2-refactor-mode)
 (js2r-add-keybindings-with-prefix "C-c r")
 
+;; add folding
+(add-hook 'js2-mode-hook 
+          (lambda ()
+            ;; Scan the file for nested code blocks
+            (imenu-add-menubar-index)
+            ;; Activate the folding mode
+            (hs-minor-mode t)
+            ;; Enable code folding
+            (hideshowvis-enable)))
+
 ;; use web-mode for .jsx files
 (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 
@@ -46,12 +56,3 @@
 ;;      (require 'tagedit)
 ;;      (tagedit-add-paredit-like-keybindings)
 ;;      (add-hook 'html-mode-hook (lambda () (tagedit-mode 1)))))
-
-;; Set position of flycheck window
-(add-to-list 'display-buffer-alist
-             `(,(rx bos "*Flycheck errors*" eos)
-               (display-buffer-reuse-window
-                display-buffer-in-side-window)
-               (reusable-frames . visible)
-               (side            . bottom)
-               (window-height   . 0.4)))

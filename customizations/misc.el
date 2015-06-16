@@ -1,15 +1,7 @@
-;; load ergomacs mode
-;(require 'ergoemacs-mode)
-;(setq ergoemacs-theme "lvl3")
-;(setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
-;(ergoemacs-mode 1)
 
 ;; Changes all yes/no questions to y/n type
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; shell scripts
-(setq-default sh-basic-offset 2)
-(setq-default sh-indentation 2)
 
 ;; No need for ~ files when editing
 (setq create-lockfiles nil)
@@ -69,6 +61,7 @@
 
 ;; enable global diff
 (global-diff-hl-mode)
+(diff-hl-margin-mode)
 
 ;; WakaTime
 ;; @see https://wakatime.com/help/plugins/emacs
