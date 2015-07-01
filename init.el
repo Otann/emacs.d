@@ -75,6 +75,9 @@
     ;; Code Folding
     hideshowvis
 
+    ;; Symbol Highlighting under cusrsor
+    highlight-symbol
+
     ;; theme
     solarized-theme
 
@@ -186,5 +189,5 @@
  ;; If there is more than one, they won't work right.
  '(global-wakatime-mode t)
  '(magit-use-overlays nil)
- '(wakatime-api-key "d978e097-1625-43bb-a887-0bc47c8c1556")
+ '(wakatime-api-key (getenv "WAKA_TIME"))
  '(wakatime-cli-path "/usr/local/bin/wakatime"))

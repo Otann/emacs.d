@@ -23,7 +23,9 @@
             ;; Activate the folding mode
             (hs-minor-mode t)
             ;; Enable code folding
-            (hideshowvis-enable)))
+            (hideshowvis-enable)
+            ;; Auto-highlight symbols
+            (highlight-symbol-mode t)))
 
 ;; use web-mode for .jsx files
 (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))

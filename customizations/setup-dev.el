@@ -14,9 +14,15 @@
 
 ;; Customize HideShowVis
 (hideshowvis-symbols)
+(global-set-key (kbd "C-c h") 'hs-toggle-hiding)
 (set-face-attribute 'hs-face nil
-                    :background "gray70"
+                    :box nil
+                    :background "gray50"
                     :foreground "black")
+
+;; Symbol highlighting
+(require 'highlight-symbol)
+(global-set-key (kbd "C-c s") 'highlight-symbol-at-point)
 
 ;; Shell scripts
 (setq-default sh-basic-offset 2)
