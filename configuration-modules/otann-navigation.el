@@ -69,16 +69,16 @@
   :ensure t
   :bind (("C-c f t" . neotree-toggle))
   :config (setq neo-theme 'ascii
-	        neo-window-width 32
-                neo-create-file-auto-open t
-                neo-banner-message nil
-                neo-show-updir-line nil
-                neo-mode-line-type 'neotree
-                neo-smart-open t
-                neo-dont-be-alone t
-                neo-persist-show nil
-                neo-show-hidden-files t
-                neo-auto-indent-point t))
+		neo-window-width 32
+		neo-create-file-auto-open t
+		neo-banner-message nil
+		neo-show-updir-line nil
+		neo-mode-line-type 'neotree
+		neo-smart-open t
+		neo-dont-be-alone t
+		neo-persist-show nil
+		neo-show-hidden-files t
+		neo-auto-indent-point t))
 
 (setq history-length 1000               ; Store more history
       use-dialog-box nil                ; Never use dialogs for minibuffer input
@@ -109,12 +109,12 @@
   :ensure helm
   :defer t
   :bind (([remap find-file] . helm-find-files)
-         ("C-c f r"         . helm-recentf))
+	 ("C-c f r"         . helm-recentf))
   :config (setq helm-recentf-fuzzy-match t
-                ;; Use recentf to find recent files
-                helm-ff-file-name-history-use-recentf t
-                ;; Find library from `require', `declare-function' and friends
-                helm-ff-search-library-in-sexp t))
+		;; Use recentf to find recent files
+		helm-ff-file-name-history-use-recentf t
+		;; Find library from `require', `declare-function' and friends
+		helm-ff-search-library-in-sexp t))
 
 ;; Misc helm commands
 (use-package helm-misc
@@ -134,23 +134,23 @@
 ;; Configure `display-buffer' behaviour for some special buffers.
 (setq display-buffer-alist
       `(; Put Helm, REPLs and error lists into the bottom side window
-        (,(rx bos (or "*Flycheck errors*" ; Flycheck error list
-                      "*compilation"      ; Compilation buffers
-                      "*Warnings*"        ; Emacs warnings
-                      "*sbt"              ; SBT REPL and compilation buffer
-                      "*SQL"              ; SQL REPL
-                      "*shell"            ; Shell window
+	(,(rx bos (or "*Flycheck errors*" ; Flycheck error list
+		      "*compilation"      ; Compilation buffers
+		      "*Warnings*"        ; Emacs warnings
+		      "*sbt"              ; SBT REPL and compilation buffer
+		      "*SQL"              ; SQL REPL
+		      "*shell"            ; Shell window
 		      "*helm"             ; Helm buffers
-                      ))
-         (display-buffer-reuse-window
-          display-buffer-in-side-window)
-         (side            . bottom)
-         (reusable-frames . visible)
-         (window-height   . 0.33))
-        ;; Let `display-buffer' reuse visible frames for all buffers.  This must
-        ;; be the last entry in `display-buffer-alist', because it overrides any
-        ;; later entry with more specific actions.
-        ("." nil (reusable-frames . visible))))
+		      ))
+	 (display-buffer-reuse-window
+	  display-buffer-in-side-window)
+	 (side            . bottom)
+	 (reusable-frames . visible)
+	 (window-height   . 0.2))
+	;; Let `display-buffer' reuse visible frames for all buffers.  This must
+	;; be the last entry in `display-buffer-alist', because it overrides any
+	;; later entry with more specific actions.
+	("." nil (reusable-frames . visible))))
 
 (provide 'otann-navigation)
 ;;; otann-navigation.el ends here

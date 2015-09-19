@@ -17,10 +17,6 @@
 ;; Clean up trailing whitespaces on file save
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-;; Magit & Ediff
-(setq magit-last-seen-setup-instructions "1.4.0")
-(setq ediff-split-window-function 'split-window-horizontally)
-
 ;;; Paired delimiters - Parenthesis editing and balancing
 (use-package smartparens
   :ensure t

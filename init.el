@@ -71,7 +71,7 @@
 ;; Load personal modules
 (defconst otann-modules "configuration-modules/")
 
-;; How emacs interacts with platform     
+;; How emacs interacts with platform
 (use-package otann-environment-fixup
   :load-path otann-modules)
 
@@ -83,26 +83,13 @@
 (use-package otann-modeline
   :load-path otann-modules)
 
-;; How to move arounf files and projects
+;; How to move around files and projects
 (use-package otann-navigation
   :load-path otann-modules)
 
 ;; Development tools
 (use-package otann-ide
   :load-path otann-modules)
-
-;; Following was added during runtime
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(global-wakatime-mode t)
- '(magit-use-overlays nil)
- '(wakatime-api-key "d978e097-1625-43bb-a887-0bc47c8c1556")
- '(wakatime-cli-path "/usr/local/bin/wakatime"))
-
 
 (provide 'init)
 ;;; init.el ends here
