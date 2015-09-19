@@ -119,6 +119,9 @@ symbols, emojis, greek letters, as well as fall backs for."
 
          (load-theme 'solarized-dark 'no-confirm)))
 
+(use-package hl-line                    ; Highlight the current line
+  :init (global-hl-line-mode 1))
+
 ;;; Navigation
 
 ; Show help popups for prefix keys

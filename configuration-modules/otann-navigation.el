@@ -20,9 +20,13 @@
   :ensure t
   :demand t
   :init (projectile-global-mode)
-  :config (progn (run-with-idle-timer 10
-				      nil
-				      #'projectile-cleanup-known-projects))
+  :config (progn (run-with-idle-timer 10 nil #'projectile-cleanup-known-projects)
+
+		 (setq projectile-completion-system 'helm
+		       projectile-find-dir-includes-top-level t
+		       projectile-mode-line '(:propertize
+					      (:eval (concat " " (projectile-project-name)))
+					      face bold)))
   :diminish projectile-mode)
 
 (use-package ibuffer-projectile         ; Group buffers by Projectile project
@@ -40,9 +44,9 @@
 ;(use-package otann-window               ; Personal window utilities
 ;  :load-path "lisp/"
 ;  :defer t
-;  :bind (("C-c w q" . lunaryorn-quit-bottom-side-windows)
-;         ("C-c w d" . lunaryorn-toggle-current-window-dedication)
-;         ("C-c w b" . lunaryorn-switch-to-minibuffer-window)))
+;  :bind (("C-c w q" . otann-quit-bottom-side-windows)
+;         ("C-c w d" . otann-toggle-current-window-dedication)
+;         ("C-c w b" . otann-switch-to-minibuffer-window)))
 
 (use-package window-numbering           ; Fast switching between windows
   :demand t
@@ -56,7 +60,33 @@
 (use-package uniquify                   ; Make buffer names unique
   :config (setq uniquify-buffer-name-style 'forward))
 
-;;; Minibuffer and Helm
+(use-package neotree                    ; Show files tree
+  :ensure t
+  :bind (("C-c f t" . neotree-toggle))
+  :config (setq neo-theme 'ascii
+	        neo-window-width 32
+                neo-create-file-auto-open t
+                neo-banner-message nil
+                neo-show-updir-line nil
+                neo-mode-line-type 'neotree
+                neo-smart-open t
+                neo-dont-be-alone t
+                neo-persist-show nil
+                neo-show-hidden-files t
+                neo-auto-indent-point t))
+
+(use-package helm-files                 ; Helm for file finding
+  :ensure helm
+  :defer t
+  :bind (([remap find-file] . helm-find-files)
+         ("C-c f r"         . helm-recentf))
+  :config (setq helm-recentf-fuzzy-match t
+                ;; Use recentf to find recent files
+                helm-ff-file-name-history-use-recentf t
+                ;; Find library from `require', `declare-function' and friends
+                helm-ff-search-library-in-sexp t))
+
+;;; HelmSmart completion for commands
 
 (setq history-length 1000               ; Store more history
       use-dialog-box nil                ; Never use dialogs for minibuffer input
@@ -77,11 +107,9 @@
 	    (set-face-attribute 'helm-source-header nil ; Inherit some style from font-lock
 				:foreground (face-foreground 'font-lock-constant-face)
 				:background (face-background 'font-lock-constant-face))
-	    (set-face-attribute 'helm-selection nil
-				:underline nil
-				:foreground (face-foreground 'font-lock-keyword-face)
-				;:background (face-background 'font-lock-keyword-face)
-				))
+	    (set-face-attribute 'helm-match nil
+				;:underline (:color foreground-color :style line)
+				:foreground (face-foreground 'font-lock-keyword-face)))
   :diminish helm-mode)
 
 ;; Misc helm commands
@@ -101,8 +129,7 @@
 
 ;; Configure `display-buffer' behaviour for some special buffers.
 (setq display-buffer-alist
-      `(
-        ;; Put REPLs and error lists into the bottom side window
+      `(; Put Helm, REPLs and error lists into the bottom side window
         (,(rx bos (or "*Flycheck errors*" ; Flycheck error list
                       "*compilation"      ; Compilation buffers
                       "*Warnings*"        ; Emacs warnings
