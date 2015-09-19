@@ -1,186 +1,97 @@
-;;;;
-;; Packages
-;;;;
+;;; init.el --- Emacs configuration of Sebastian Wiesner -*- lexical-binding: t; -*-
+;;
+;; Copyright (c) 2012-2015 Anton Chebotaev <anton.chebotaev@gmail.com>
+;;
+;; Author: Anton Chebotaev <anton.chebotaev@gmail.com>
+;; URL: https://gihub.com/otann/.emacs.d
+;; Keywords: convenience
 
-;; Define package repositories
+;; This file is not part of GNU Emacs.
+
+;;; Commentary:
+
+;; Emacs config of Anton Chebotaev. Heavily inspired by smilar one from Sebastian Wiesner
+;; see https://github.com/lunaryorn/.emacs.d/
+
+;;; Code:
+
+;;; Dumb fixes ;;;
+
+;;; Debugging
+(setq message-log-max 10000)
+
+;;; Package management
+
+;; Please don't load outdated byte code
+(setq load-prefer-newer t)
+
 (require 'package)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives
-             '("tromey" . "http://tromey.com/elpa/") t)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-;; (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-;;                          ("marmalade" . "http://marmalade-repo.org/packages/")
-;;                          ("melpa" . "http://melpa-stable.milkbox.net/packages/")))
-
-
-;; Load and activate emacs packages. Do this first so that the
-;; packages are loaded before you start trying to modify them.
-;; This also sets the load path.
 (package-initialize)
 
-;; Download the ELPA archive description if needed.
-;; This informs Emacs about the latest versions of all packages, and
-;; makes them available for download.
-(when (not package-archive-contents)
-  (package-refresh-contents))
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-;; The packages you want installed. You can also install these
-;; manually with M-x package-install
-;; Add in your own as you wish:
-(defvar my-packages
-  '(;; makes handling lisp expressions much, much easier
-    ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
-    paredit
+;;; Requires, builds up `use-package` macro
 
-    ;; Make completions
-    ido-ubiquitous ; allow ido usage in as many contexts as possible
-    ido-vertical-mode
+(eval-when-compile
+  (require 'use-package))
 
-    ;; Enhances M-x to allow easier execution of commands. Provides
-    ;; a filterable list of possible commands in the minibuffer
-    ;; http://www.emacswiki.org/emacs/Smex
-    smex
+(require 'bind-key)
+(require 'diminish)
 
-    ;; project navigation
-    projectile
+(require 'subr-x)
+(require 'rx)
+(require 'time-date)
 
-    ;; Fight minor modes clutter
-    delight
+;; Brings some functional practicies to elisp
+(use-package dash
+  :ensure t
+  :demand t)
 
-    ;; git integration
-    magit
+;;; Customize further customizations
+(defconst otann-custom-file (locate-user-emacs-file "custom.el")
+  "File used to store settings from Customization UI.")
 
-    ;; tree view
-    neotree
+(use-package cus-edit
+  :defer t
+  :config (setq custom-file otann-custom-file
+                custom-buffer-done-kill nil       ; Kill when existing
+                custom-buffer-verbose-help nil    ; Remove redundant help text
+                custom-unlispify-tag-names nil    ; Show me the real variable name
+                custom-unlispify-menu-entries nil)
+  :init (load otann-custom-file 'no-error 'no-message))
 
-    ;; Prograaming languages spellchecking
-    flyspell
+;;; All personal configurations is split into modules
 
-    ;; extra syntax highlighting for clojure
-    clojure-mode-extra-font-locking
+;; Load personal modules
+(defconst otann-modules "configuration-modules/")
 
-    ;; integration with a Clojure REPL
-    ;; https://github.com/clojure-emacs/cider
-    cider
+;; How emacs interacts with platform     
+(use-package otann-environment-fixup
+  :load-path otann-modules)
 
-    ;; Autocomplete
-    company
-    ;auto-complete
-    ;ac-js2
-    ;ac-cider
+;; Themes and bars
+(use-package otann-look-and-feel
+  :load-path otann-modules)
 
-    ;; Code Folding
-    hideshowvis
+;; Mode line stands out for it's complexity
+(use-package otann-modeline
+  :load-path otann-modules)
 
-    ;; Symbol Highlighting under cusrsor
-    highlight-symbol
+;; How to move arounf files and projects
+(use-package otann-navigation
+  :load-path otann-modules)
 
-    ;; theme
-    solarized-theme
-
-    ;; major modes
-    tagedit           ; edit html tags like sexps
-    clojure-mode      ; https://github.com/clojure-emacs/clojure-mode
-    yaml-mode
-    diff-hl
-    wakatime-mode
-
-    ;; Javascript development
-    web-mode ; mode which can handle mixed js and html like jsx
-    js2-mode ; nice js editing mode which recognizes modern ES6+ features
-    js2-refactor
-    json-mode
-
-    ;; assign number to each window
-    window-numbering
-    ))
-;; TODO:
-; packages to check
-; - speedbar
-; - ediff ; (setq ediff-split-window-function 'split-window-horizontally)
-; - Дмитрий Бушенко. Изучаем Emacs
-; - powerline (https://github.com/milkypostman/powerline)
-
-
-
-;; On OS X, an Emacs instance started from the graphical user
-;; interface will have a different environment than a shell in a
-;; terminal window, because OS X does not run a shell during the
-;; login. Obviously this will lead to unexpected results when
-;; calling external utilities like make from Emacs.
-;; This library works around this problem by copying important
-;; environment variables from the user's shell.
-;; https://github.com/purcell/exec-path-from-shell
-(if (eq system-type 'darwin)
-    (add-to-list 'my-packages 'exec-path-from-shell))
-
-(dolist (p my-packages)
-  (when (not (package-installed-p p))
-    (package-install p)))
-
-
-;; Place downloaded elisp files in ~/.emacs.d/vendor. You'll then be able
-;; to load them.
-;;
-;; For example, if you download yaml-mode.el to ~/.emacs.d/vendor,
-;; then you can add the following code to this file:
-;;
-;; (require 'yaml-mode)
-;; (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-;; 
-;; Adding this code will make Emacs enter yaml mode whenever you open
-;; a .yml file
-(add-to-list 'load-path "~/.emacs.d/vendor")
-
-
-;;;;
-;; Customization
-;;;;
-
-;; Add a directory to our load path so that when you `load` things
-;; below, Emacs knows where to look for the corresponding file.
-(add-to-list 'load-path "~/.emacs.d/customizations")
-
-;; Sets up exec-path-from-shell so that Emacs will use the correct
-;; environment variables
-(load "shell-integration.el")
-
-;; These customizations make it easier for you to navigate files,
-;; switch buffers, and choose options from the minibuffer.
-(load "navigation.el")
-
-;; These customizations change the way emacs looks and disable/enable
-;; some user interface elements
-(load "ui.el")
-
-;; These customizations make editing a bit nicer.
-(load "editing.el")
-
-;; Hard-to-categorize customizations
-(load "misc.el")
-
-;; Load custom modeline
-(load "modeline.el")
-
-;; For editing lisps
-(load "elisp-editing.el")
-
-;; Langauage-specific
-(load "setup-dev.el")
-(load "setup-clojure.el")
-(load "setup-js.el")
+;; Development tools
+(use-package otann-ide
+  :load-path otann-modules)
 
 ;; Following was added during runtime
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -189,5 +100,9 @@
  ;; If there is more than one, they won't work right.
  '(global-wakatime-mode t)
  '(magit-use-overlays nil)
- '(wakatime-api-key (getenv "WAKA_TIME"))
+ '(wakatime-api-key "d978e097-1625-43bb-a887-0bc47c8c1556")
  '(wakatime-cli-path "/usr/local/bin/wakatime"))
+
+
+(provide 'init)
+;;; init.el ends here
