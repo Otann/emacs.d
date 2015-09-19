@@ -59,7 +59,13 @@
 		   (define-key map (kbd "C-M-t") #'sp-transpose-sexp)))
   :diminish (smartparens-mode . "ⓟ"))
 
-
+;;; WakaTime track time spent in projects
+;; custom key supposed to be in custom.el
+;; @see https://wakatime.com/help/plugins/emacs
+(use-package wakatime-mode
+  :ensure t
+  :config (global-wakatime-mode)
+  :diminish wakatime-mode)
 
 (provide 'otann-ide)
 ;;; otann-ide.el ends here
