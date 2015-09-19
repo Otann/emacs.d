@@ -60,16 +60,17 @@
 (use-package cus-edit
   :defer t
   :config (setq custom-file otann-custom-file
-                custom-buffer-done-kill nil       ; Kill when existing
-                custom-buffer-verbose-help nil    ; Remove redundant help text
-                custom-unlispify-tag-names nil    ; Show me the real variable name
-                custom-unlispify-menu-entries nil)
+		custom-buffer-done-kill nil       ; Kill when existing
+		custom-buffer-verbose-help nil    ; Remove redundant help text
+		custom-unlispify-tag-names nil    ; Show me the real variable name
+		custom-unlispify-menu-entries nil)
   :init (load otann-custom-file 'no-error 'no-message))
 
 ;;; All personal configurations is split into modules
 
 ;; Load personal modules
-(defconst otann-modules "configuration-modules/")
+(defconst otann-modules "configuration-modules/"
+  "Path where all confguration is decomposed.")
 
 ;; How emacs interacts with platform
 (use-package otann-environment-fixup
