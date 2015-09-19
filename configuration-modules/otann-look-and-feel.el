@@ -117,7 +117,20 @@ symbols, emojis, greek letters, as well as fall backs for."
                solarized-height-plus-3  1.0
                solarized-height-plus-4  1.0)
 
-         (load-theme 'solarized-dark 'no-confirm)))
+         (load-theme 'solarized-dark 'no-confirm)
+
+	 ;; This fixes ugly line in low contrast modeline version
+	 (set-face-attribute 'mode-line nil :underline nil)
+	 (set-face-attribute 'mode-line-inactive nil :underline nil)
+
+	 (let ((background (face-foreground 'font-lock-negation-char-face))
+	       (foreground (face-background 'default)))
+	   (set-face-attribute 'mode-line-highlight nil
+			       :foreground foreground
+			       :background background
+			       :overline background
+			       :box (list :line-width 1
+					  :color background)))))
 
 (use-package hl-line                    ; Highlight the current line
   :init (global-hl-line-mode 1))

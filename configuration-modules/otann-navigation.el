@@ -24,10 +24,15 @@
 
 		 (setq projectile-completion-system 'helm
 		       projectile-find-dir-includes-top-level t
-		       projectile-mode-line '(:propertize
-					      (:eval (concat " " (projectile-project-name)))
-					      face bold)))
+		       projectile-mode-line '(:eval
+					      (let ((text (projectile-project-name)))
+						(if (string= text "-")
+						    "" (concat " " text " "))))))
   :diminish projectile-mode)
+
+;; (let ((project (projectile-project-name)))
+;;						       (cond ((eq project "-") (concat "+++" project)
+;;							      (t (concat " " project " ")))))
 
 (use-package ibuffer-projectile         ; Group buffers by Projectile project
   :ensure t
@@ -50,7 +55,10 @@
 
 (use-package window-numbering           ; Fast switching between windows
   :demand t
-  :config (window-numbering-mode)
+  :config (progn
+	    (window-numbering-mode)
+	    ;; Will be included in otann-modeline package manually
+	    (window-numbering-clear-mode-line))
   :bind (("C-1" . select-window-1)
 	 ("C-2" . select-window-2)
 	 ("C-3" . select-window-3)
@@ -75,17 +83,6 @@
                 neo-show-hidden-files t
                 neo-auto-indent-point t))
 
-(use-package helm-files                 ; Helm for file finding
-  :ensure helm
-  :defer t
-  :bind (([remap find-file] . helm-find-files)
-         ("C-c f r"         . helm-recentf))
-  :config (setq helm-recentf-fuzzy-match t
-                ;; Use recentf to find recent files
-                helm-ff-file-name-history-use-recentf t
-                ;; Find library from `require', `declare-function' and friends
-                helm-ff-search-library-in-sexp t))
-
 ;;; HelmSmart completion for commands
 
 (setq history-length 1000               ; Store more history
@@ -103,7 +100,7 @@
 	    (warn "`helm-config' loaded! Get rid of it ASAP!")))
   :config (progn
 	    (setq helm-split-window-in-side-p t
-		  helm-display-header-line nil)		  
+		  helm-display-header-line nil)
 	    (set-face-attribute 'helm-source-header nil ; Inherit some style from font-lock
 				:foreground (face-foreground 'font-lock-constant-face)
 				:background (face-background 'font-lock-constant-face))
@@ -112,8 +109,19 @@
 				:foreground (face-foreground 'font-lock-keyword-face)))
   :diminish helm-mode)
 
+(use-package helm-files                 ; Helm for file finding
+  :ensure helm
+  :defer t
+  :bind (([remap find-file] . helm-find-files)
+         ("C-c f r"         . helm-recentf))
+  :config (setq helm-recentf-fuzzy-match t
+                ;; Use recentf to find recent files
+                helm-ff-file-name-history-use-recentf t
+                ;; Find library from `require', `declare-function' and friends
+                helm-ff-search-library-in-sexp t))
+
 ;; Misc helm commands
-(use-package helm-misc                  
+(use-package helm-misc
   :ensure helm
   :bind (([remap switch-to-buffer] . helm-mini)))
 

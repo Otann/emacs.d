@@ -59,6 +59,29 @@
 		   (define-key map (kbd "C-M-t") #'sp-transpose-sexp)))
   :diminish (smartparens-mode . "ⓟ"))
 
+(use-package flycheck                   ; On-the-fly syntax checking
+  :ensure t
+  :bind (("C-c e l" . list-flycheck-errors)
+         ("C-c e n" . flycheck-next-error)
+         ("C-c e p" . flycheck-previous-error)
+         ("C-c e c" . flycheck-buffer)
+         ("C-c e C" . flycheck-clear)
+         ("C-c e f" . flycheck-first-error)
+         ("C-c e w" . flycheck-copy-errors-as-kill)
+         ("C-c t f" . flycheck-mode))
+  :init (global-flycheck-mode)
+  :config (progn
+            (setq flycheck-indication-mode 'right-fringe
+		  flycheck-standard-error-navigation nil
+                  flycheck-display-errors-function
+                  #'flycheck-display-error-messages-unless-error-list
+                  flycheck-scalastylerc "scalastyle_config.xml")
+
+            ;; Use italic face for checker name
+            (set-face-attribute 'flycheck-error-list-checker-name nil
+                                :inherit 'italic))
+  :diminish (flycheck-mode . "Ⓕ"))
+
 ;;; WakaTime track time spent in projects
 ;; custom key supposed to be in custom.el
 ;; @see https://wakatime.com/help/plugins/emacs
