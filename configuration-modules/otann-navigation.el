@@ -65,9 +65,6 @@
 	 ("C-4" . select-window-4)
 	 ("C-5" . select-window-5)))
 
-(use-package uniquify                   ; Make buffer names unique
-  :config (setq uniquify-buffer-name-style 'forward))
-
 (use-package neotree                    ; Show files tree
   :ensure t
   :bind (("C-c f t" . neotree-toggle))
@@ -83,12 +80,11 @@
                 neo-show-hidden-files t
                 neo-auto-indent-point t))
 
-;;; HelmSmart completion for commands
-
 (setq history-length 1000               ; Store more history
       use-dialog-box nil                ; Never use dialogs for minibuffer input
       )
 
+;;; Helm - Smart completion for commands
 ;; Helm itself (Powerful minibuffer input framework)
 
 (use-package helm

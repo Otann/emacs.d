@@ -57,9 +57,9 @@
          (text-and-face
           (pcase flycheck-last-status-change
             (`not-checked nil)
-            (`no-checker '("?" . border))
-            (`running    '("*" . border))
-            (`errored    '("!" . border))
+            (`no-checker '("?" . nil))
+            (`running    '("*" . nil))
+            (`errored    '("!" . nil))
             (`finished
              (let* ((error-counts (flycheck-count-errors flycheck-current-errors))
                     (no-errors    (cdr (assq 'error error-counts)))
@@ -73,7 +73,7 @@
                  (cons (format " %s " no-warnings)
 		       'flycheck-fringe-warning))
 		
-                (t (cons "k" 'border)))))
+                (t (cons "•" nil)))))
 	    
             (`interrupted (cons "x" nil))
             (`suspicious '("?" . warning)))))

@@ -58,11 +58,11 @@
   :defer t
   :if (and (window-system) (eq system-type 'darwin))
   :init (progn
-	  (bind-key "H-s" 'save-buffer)
-	  (bind-key "H-v" 'yank)
-	  (bind-key "H-c" 'kill-ring-save)
-	  (bind-key "H-x" 'kill-region)
-	  (bind-key "H-z" 'undo))
+          (bind-key "H-s" 'save-buffer)
+          (bind-key "H-v" 'yank)
+          (bind-key "H-c" 'kill-ring-save)
+          (bind-key "H-x" 'kill-region)
+          (bind-key "H-z" 'undo))
   :config (setq ns-pop-up-frames nil            ; Don't pop up new frames from the workspace
                 mac-option-modifier 'meta       ; Option is simply the natural Meta
                 mac-command-modifier 'hyper     ; Leave hyper for MacOS Shortcuts
@@ -74,22 +74,37 @@
 
 ;; For Some reason code above is not used by emacs-mac port
 (when (and (window-system) (eq system-type 'darwin))
-  (progn (bind-key "H-s" 'save-buffer)
-	 (bind-key "H-v" 'yank)
-	 (bind-key "H-c" 'kill-ring-save)
-	 (bind-key "H-x" 'kill-region)
-	 (bind-key "H-z" 'undo)
-	 (bind-key "H-w" (lambda () (interactive) (kill-buffer)))
-	 (bind-key "H-q" 'save-buffers-kill-terminal)
-	 (bind-key "H-<right>" 'move-end-of-line)
-	 (bind-key "H-<left>" 'move-beginning-of-line))
+  (progn (bind-key "H-a" 'mark-whole-buffer)
+         (bind-key "H-t" 'toggle-truncate-lines)
+         (bind-key "H-s" 'save-buffer)
+         (bind-key "H-v" 'yank)
+         (bind-key "H-c" 'kill-ring-save)
+         (bind-key "H-x" 'kill-region)
+         (bind-key "H-z" 'undo)
+         (bind-key "H-w" (lambda () (interactive) (kill-buffer)))
+         (bind-key "H-q" 'save-buffers-kill-terminal)
+         (bind-key "H-<right>" 'move-end-of-line)
+         (bind-key "H-<left>" 'move-beginning-of-line))
   (setq ns-pop-up-frames nil            ; Don't pop up new frames from the workspace
-	mac-option-modifier 'meta       ; Option is simply the natural Meta
-	mac-command-modifier 'hyper     ; Leave hyper for MacOS Shortcuts
-	mac-right-command-modifier 'left
-	mac-right-option-modifier 'none ; Keep right option for accented input
-	;; Just in case we ever need these keys
-	mac-function-modifier 'hyper))
+        mac-option-modifier 'meta       ; Option is simply the natural Meta
+        mac-command-modifier 'hyper     ; Leave hyper for MacOS Shortcuts
+        mac-right-command-modifier 'left
+        mac-right-option-modifier 'none ; Keep right option for accented input
+        ;; Just in case we ever need these keys
+        mac-function-modifier 'hyper))
+
+;;; File Handling
+
+(use-package saveplace                  ; Save point position in files
+  :init (setq-default save-place t)
+  :config (setq save-place-file (concat user-emacs-directory "places")))
+
+;; Keep backup and auto save files out of the way
+(setq backup-directory-alist `((".*" . ,(locate-user-emacs-file ".backup")))
+      auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
+;; Delete files to trash
+(setq delete-by-moving-to-trash t)
 
 (use-package osx-trash                  ; Trash support for OS X
   :if (eq system-type 'darwin)
