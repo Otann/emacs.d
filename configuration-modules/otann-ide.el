@@ -81,6 +81,14 @@
 		  #'flycheck-display-error-messages-unless-error-list
 		  flycheck-scalastylerc "scalastyle_config.xml")
 
+	    ;; disable jshint since we prefer eslint checking
+	    (setq-default flycheck-disabled-checkers
+			  (append flycheck-disabled-checkers
+				  '(javascript-jshint)))
+
+	    ;; use eslint with web-mode for jsx files
+	    (flycheck-add-mode 'javascript-eslint 'js2-mode)
+
 	    ;; Use italic face for checker name
 	    (set-face-attribute 'flycheck-error-list-checker-name nil
 				:inherit 'italic))
@@ -93,6 +101,11 @@
   :ensure t
   :config (global-wakatime-mode)
   :diminish wakatime-mode)
+
+;; Subword/superword editing
+(use-package subword
+  :defer t
+  :diminish subword-mode)
 
 ;; Install code-folding
 (use-package hideshowvis
@@ -176,6 +189,127 @@
 (use-package git-timemachine
   :ensure t
   :bind (("C-c v t" . git-timemachine)))
+
+;;; Languages Modes
+;; html editing
+(use-package web-mode
+  :ensure web-mode
+  :defer t
+  :mode "\\.html\\'"
+  :config (setq web-mode-markup-indent-offset 2
+		web-mode-css-indent-offset 2
+		web-mode-code-indent-offset 2))
+
+;; JS/ES editing
+(use-package js2-mode
+  :ensure t
+  :mode "\\.\\(js\\|jsx\\)\\\\'"
+  :config (progn (setq-default js2-basic-offset 2)
+		 (setq js2-global-externs '("angular")
+		       js2-strict-missing-semi-warning nil
+		       js2-missing-semi-one-line-override nil)
+
+		 (setq-default js2-basic-offset 2)
+
+		 (defun my-js2-mode-hook ()
+		   (interactive)
+		   #'js2-highlight-unused-variables-mode
+		   ; Scan the file for nested code blocks
+		   (imenu-add-menubar-index)
+		   ; Enable code folding
+		   (hideshowvis-enable))
+
+		 (add-hook 'js2-mode-hook 'my-js2-mode-hook)))
+
+(use-package js2-refactor
+  :ensure t
+  :config (add-hook 'js2-mode-hook #'js2-refactor-mode))
+
+(use-package json-mode
+  :ensure t
+  :defer t)
+
+(use-package json-reformat
+  :ensure t
+  :defer t
+  :bind (("C-c x j" . json-reformat-region)))
+
+;; Markdown
+(use-package markdown-mode
+  :ensure t
+  ;; Just no, dear Markdown Mode.  Don't force that bastard Github dialect upon
+  ;; me!
+  :mode ("\\.md\\'" . markdown-mode)
+  :config (progn ;; No filling in GFM, because line breaks are significant.
+	    (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
+	    ;; Use visual lines instead
+	    (add-hook 'gfm-mode-hook #'visual-line-mode)
+	    (add-hook 'gfm-mode-hook #'lunaryorn-whitespace-style-no-long-lines)
+
+	    (bind-key "C-c C-s C" #'markdown-insert-gfm-code-block markdown-mode-map)
+	    (bind-key "C-c C-s P" #'markdown-insert-gfm-code-block markdown-mode-map)
+
+	    ;; Fight my habit of constantly pressing M-q.  We should not fill in GFM
+	    ;; Mode.
+	    (bind-key "M-q" #'ignore gfm-mode-map)))
+
+;; Shell scripts
+(use-package sh-script
+  :mode ("\\.zsh\\'" . sh-mode)
+  :config
+  ;; Use two spaces in shell scripts.
+  (setq
+   ;; The basic indentation
+   sh-indentation 2
+   ; The offset for nested indentation
+   sh-basic-offset 2))
+
+(use-package yaml-mode
+  :ensure t)
+
+;;; Clojure
+(use-package clojure-mode
+  :ensure t
+  :mode "\\.\\(clj\\|cljs\\|edn\\|lein-env\\|boot\\)\\\\'"
+  :config (progn (use-package clojure-mode-extra-font-locking
+		   :ensure t)
+
+		 (defun my-clojure-hook ()
+		   (interactive)
+		   (setq inferior-lisp-program "lein repl")
+		   (font-lock-add-keywords
+		    nil
+		    '(("(\\(facts?\\)" (1 font-lock-keyword-face))
+		      ("(\\(background?\\)" (1 font-lock-keyword-face))))
+		   (define-clojure-indent (fact 1))
+		   ;; Enable code folding
+		   (hideshowvis-enable)
+		   ;; Deal with parenthesis
+		   #'smartparens-strict-mode)))
+
+(use-package cider
+  :ensure t
+  :diminish (cider-mode . "ⓢ")
+  :config (progn
+	    ;; provides minibuffer documentation for the
+	    ;; code you're typing into the repl
+	    (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+
+	    (setq
+	     ;; go right to the REPL buffer when it's finished connecting
+	     cider-repl-pop-to-buffer-on-connect t
+	     ;;  When there's a cider error, show its buffer and switch to it
+	     cider-show-error-buffer t
+	     cider-auto-select-error-buffer t
+
+	     ;; Where to store the cider history.
+	     cider-repl-history-file "~/.emacs.d/cider-history"
+
+	     ;; Wrap when navigating history.
+	     cider-repl-wrap-history t)
+
+	    (add-hook 'cider-repl-mode-hook 'smartparens-strict-mode)))
+
 
 (provide 'otann-ide)
 ;;; otann-ide.el ends here
