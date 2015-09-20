@@ -47,8 +47,8 @@
     ;; to prepend them in proper order subsequently
     (with-eval-after-load 'info
       (dolist (dir (nreverse (parse-colon-path (getenv "INFOPATH"))))
-        (when dir
-          (add-to-list 'Info-directory-list dir))))))
+	(when dir
+	  (add-to-list 'Info-directory-list dir))))))
 
 
 ;;; OS X support
@@ -58,40 +58,41 @@
   :defer t
   :if (and (window-system) (eq system-type 'darwin))
   :init (progn
-          (bind-key "H-s" 'save-buffer)
-          (bind-key "H-v" 'yank)
-          (bind-key "H-c" 'kill-ring-save)
-          (bind-key "H-x" 'kill-region)
-          (bind-key "H-z" 'undo))
+	  (bind-key "H-s" 'save-buffer)
+	  (bind-key "H-v" 'yank)
+	  (bind-key "H-c" 'kill-ring-save)
+	  (bind-key "H-x" 'kill-region)
+	  (bind-key "H-z" 'undo))
   :config (setq ns-pop-up-frames nil            ; Don't pop up new frames from the workspace
-                mac-option-modifier 'meta       ; Option is simply the natural Meta
-                mac-command-modifier 'hyper     ; Leave hyper for MacOS Shortcuts
-                mac-right-command-modifier 'left
-                mac-right-option-modifier 'none ; Keep right option for accented input
-                ;; Just in case we ever need these keys
-                mac-function-modifier 'hyper)
-           (message "This is evaluated when `foo' is loaded"))
+		mac-option-modifier 'meta       ; Option is simply the natural Meta
+		mac-command-modifier 'hyper     ; Leave hyper for MacOS Shortcuts
+		mac-right-command-modifier 'left
+		mac-right-option-modifier 'none ; Keep right option for accented input
+		;; Just in case we ever need these keys
+		mac-function-modifier 'hyper)
+	   (message "This is evaluated when `foo' is loaded"))
 
 ;; For Some reason code above is not used by emacs-mac port
 (when (and (window-system) (eq system-type 'darwin))
   (progn (bind-key "H-a" 'mark-whole-buffer)
-         (bind-key "H-t" 'toggle-truncate-lines)
-         (bind-key "H-s" 'save-buffer)
-         (bind-key "H-v" 'yank)
-         (bind-key "H-c" 'kill-ring-save)
-         (bind-key "H-x" 'kill-region)
-         (bind-key "H-z" 'undo)
-         (bind-key "H-w" (lambda () (interactive) (kill-buffer)))
-         (bind-key "H-q" 'save-buffers-kill-terminal)
-         (bind-key "H-<right>" 'move-end-of-line)
-         (bind-key "H-<left>" 'move-beginning-of-line))
+	 (bind-key "H-t" 'toggle-truncate-lines)
+	 (bind-key "H-s" 'save-buffer)
+	 (bind-key "H-v" 'yank)
+	 (bind-key "H-c" 'kill-ring-save)
+	 (bind-key "H-x" 'kill-region)
+	 (bind-key "H-z" 'undo)
+	 (bind-key "H-w" (lambda () (interactive) (kill-buffer)))
+	 (bind-key "H-q" 'save-buffers-kill-terminal)
+	 (bind-key "H-<right>" 'move-end-of-line)
+	 (bind-key "H-<left>" 'move-beginning-of-line)
+	 (bind-key "H-f" 'toggle-frame-fullscreen))
   (setq ns-pop-up-frames nil            ; Don't pop up new frames from the workspace
-        mac-option-modifier 'meta       ; Option is simply the natural Meta
-        mac-command-modifier 'hyper     ; Leave hyper for MacOS Shortcuts
-        mac-right-command-modifier 'left
-        mac-right-option-modifier 'none ; Keep right option for accented input
-        ;; Just in case we ever need these keys
-        mac-function-modifier 'hyper))
+	mac-option-modifier 'meta       ; Option is simply the natural Meta
+	mac-command-modifier 'hyper     ; Leave hyper for MacOS Shortcuts
+	mac-right-command-modifier 'left
+	mac-right-option-modifier 'none ; Keep right option for accented input
+	;; Just in case we ever need these keys
+	mac-function-modifier 'hyper))
 
 ;;; File Handling
 

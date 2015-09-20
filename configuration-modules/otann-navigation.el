@@ -30,14 +30,47 @@
 						    "" (concat " " text " "))))))
   :diminish projectile-mode)
 
-;; (let ((project (projectile-project-name)))
-;;						       (cond ((eq project "-") (concat "+++" project)
-;;							      (t (concat " " project " ")))))
-
-(use-package ibuffer-projectile         ; Group buffers by Projectile project
+;; Group buffers by Projectile project
+(use-package ibuffer-projectile
   :ensure t
   :defer t
   :init (add-hook 'ibuffer-hook #'ibuffer-projectile-set-filter-groups))
+
+(use-package dired
+  :defer t
+  :config (progn
+	    (require 'dired-x)
+
+	    (setq dired-auto-revert-buffer t    ; Revert on re-visiting
+		  ;; Better dired flags: `-l' is mandatory, `-a' shows all files, `-h'
+		  ;; uses human-readable sizes, and `-F' appends file-type classifiers
+		  ;; to file names (for better highlighting)
+		  dired-listing-switches "-alhF"
+		  dired-ls-F-marks-symlinks t   ; -F marks links with @
+		  ;; Inhibit prompts for simple recursive operations
+		  dired-recursive-copies 'always
+		  ;; Auto-copy to other Dired split window
+		  dired-dwim-target t)))
+
+;; Additional tools for Dired
+(use-package dired-x
+  :bind (("C-x C-j" . dired-jump))
+  :init (add-hook 'dired-mode-hook #'dired-omit-mode)
+  :config
+  (progn
+    (setq dired-omit-verbose nil)        ; Shut up, dired
+
+    (when (eq system-type 'darwin)
+      ;; OS X bsdtar is mostly compatible with GNU Tar
+      (setq dired-guess-shell-gnutar "tar"))
+
+    ;; Diminish dired-omit-mode. We need this hack, because Dired Omit Mode has
+    ;; a very peculiar way of registering its lighter explicitly in
+    ;; `dired-omit-startup'.  We can't just use `:diminish' because the lighter
+    ;; isn't there yet after dired-omit-mode is loaded.
+    (add-function :after (symbol-function 'dired-omit-startup)
+		  (lambda () (diminish 'dired-omit-mode " ⓞ"))
+		  '((name . dired-omit-mode-diminish)))))
 
 ;(use-package window                     ; Standard window functions
 ;  :bind (("C-c w =" . balance-windows)
@@ -63,9 +96,11 @@
 	 ("C-2" . select-window-2)
 	 ("C-3" . select-window-3)
 	 ("C-4" . select-window-4)
-	 ("C-5" . select-window-5)))
+	 ("C-5" . select-window-5)
+	 ("C-0" . select-window-0)))
 
-(use-package neotree                    ; Show files tree
+;; Show files tree
+(use-package neotree
   :ensure t
   :bind (("C-c f t" . neotree-toggle))
   :config (setq neo-theme 'ascii
@@ -80,9 +115,10 @@
 		neo-show-hidden-files t
 		neo-auto-indent-point t))
 
-(setq history-length 1000               ; Store more history
-      use-dialog-box nil                ; Never use dialogs for minibuffer input
-      )
+;; Store more history
+; Never use dialogs for minibuffer input
+(setq history-length 1000
+      use-dialog-box nil)
 
 ;;; Helm - Smart completion for commands
 ;; Helm itself (Powerful minibuffer input framework)
@@ -121,11 +157,13 @@
   :ensure helm
   :bind (([remap switch-to-buffer] . helm-mini)))
 
-(use-package helm-command               ; M-x in Helm
+;; M-x in Helm
+(use-package helm-command
   :ensure helm
   :bind (([remap execute-extended-command] . helm-M-x)))
 
-(use-package helm-projectile            ; Helm frontend for Projectile
+;; Helm frontend for Projectile
+(use-package helm-projectile
   :ensure t
   :defer t
   :init (with-eval-after-load 'projectile (helm-projectile-on))

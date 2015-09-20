@@ -30,7 +30,6 @@
 		       ;; Don't kill entire symbol on C-k
 		       sp-hybrid-kill-entire-symbol nil)
 		 (let ((map smartparens-mode-map))
-		   (define-key map (kbd "C-M-f") #'sp-forward-sexp)
 		   ;; Movement and navigation
 		   (define-key map (kbd "C-M-f") #'sp-forward-sexp)
 		   (define-key map (kbd "C-M-b") #'sp-backward-sexp)
@@ -52,6 +51,7 @@
 		   (define-key map (kbd "C-<right>") #'sp-forward-slurp-sexp)
 		   (define-key map (kbd "C-}") #'sp-forward-barf-sexp)
 		   (define-key map (kbd "C-<left>") #'sp-forward-barf-sexp)
+		   ;;
 		   (define-key map (kbd "C-(") #'sp-backward-slurp-sexp)
 		   (define-key map (kbd "C-M-<left>") #'sp-backward-slurp-sexp)
 		   (define-key map (kbd "C-{") #'sp-backward-barf-sexp)
