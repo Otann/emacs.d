@@ -15,9 +15,9 @@
 
 ;;; Initial window size
 (setq initial-frame-alist '((top . 0)
-			    (left . 0)
-			    (width . 180)
-			    (height . 53)))
+                            (left . 0)
+                            (width . 150)
+                            (height . 53)))
 
 ;;; Fonts
 ;;
@@ -28,13 +28,13 @@
 ;; development work here: https://github.com/powerline/fonts
 
 (set-face-attribute 'default nil
-		    :family "Source Code Pro for Powerline"
-		    :height 140
-		    :weight 'regular)
+                    :family "Source Code Pro"
+                    :height 140
+                    :weight 'regular)
 (set-face-attribute 'variable-pitch nil
-		    :family "Source Code Pro for Powerline"
-		    :height 160
-		    :weight 'regular)
+                    :family "Source Code Pro"
+                    :height 160
+                    :weight 'regular)
 
 ;; Font setup
 (defun otann-configure-fonts (frame)
@@ -46,27 +46,27 @@ symbols, emojis, greek letters, as well as fall backs for."
 
   (dolist (script '(symbol mathematical))
     (set-fontset-font t script (font-spec :family "XITS Math")
-		      frame 'prepend))
+                      frame 'prepend))
 
   ;; Define a font set stack for symbols, greek and math characters
   (dolist (script '(symbol greek mathematical))
     (set-fontset-font t script (font-spec :family "Arial Unicode MS")
-		      frame 'prepend)
+                      frame 'prepend)
     (set-fontset-font t script (font-spec :family "Menlo")
-		      frame 'prepend)
+                      frame 'prepend)
     (set-fontset-font t script (font-spec :family "DejaVu Sans Mono")
-		      frame 'prepend)
+                      frame 'prepend)
     (set-fontset-font t script (font-spec :family "Monoid" :weight 'light)
-		      frame 'prepend))
+                      frame 'prepend))
 
   (when (eq system-type 'darwin)
     ;; Colored Emoji on OS X, prefer over everything else!
     (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji")
-		      frame 'prepend))
+                      frame 'prepend))
 
   ;; Fallbacks for math and generic symbols
   (set-fontset-font t nil (font-spec :family "Apple Symbols")
-		    frame 'append))
+                    frame 'append))
 
 (-when-let (frame (selected-frame))
   (otann-configure-fonts frame))
@@ -80,7 +80,7 @@ symbols, emojis, greek letters, as well as fall backs for."
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 (when (and (not (eq system-type 'darwin))
-	   (fboundp 'menu-bar-mode))
+           (fboundp 'menu-bar-mode))
   (menu-bar-mode -1))
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
@@ -105,32 +105,32 @@ symbols, emojis, greek letters, as well as fall backs for."
   :config
   ;; Disable variable pitch fonts in Solarized theme
   (progn (setq solarized-use-variable-pitch nil
-	       ;; Prefer italics over bold
-	       ;solarized-use-less-bold t
-	       ;solarized-use-more-italic t
-	       solarized-high-contrast-mode-line t
-	       solarized-distinct-fringe-background nil
-	       ;; I find different font sizes irritating.
-	       solarized-height-minus-1 1.0
-	       solarized-height-plus-1  1.0
-	       solarized-height-plus-2  1.0
-	       solarized-height-plus-3  1.0
-	       solarized-height-plus-4  1.0)
+               ;; Prefer italics over bold
+               solarized-use-less-bold t
+               ;solarized-use-more-italic t
+               solarized-high-contrast-mode-line t
+               solarized-distinct-fringe-background nil
+               ;; I find different font sizes irritating.
+               solarized-height-minus-1 1.0
+               solarized-height-plus-1  1.0
+               solarized-height-plus-2  1.0
+               solarized-height-plus-3  1.0
+               solarized-height-plus-4  1.0)
 
-	 (load-theme 'solarized-dark 'no-confirm)
+         (load-theme 'solarized-dark 'no-confirm)
 
-	 ;; This fixes ugly line in low contrast modeline version
-	 (set-face-attribute 'mode-line nil :underline nil)
-	 (set-face-attribute 'mode-line-inactive nil :underline nil)
+         ;; This fixes ugly line in low contrast modeline version
+         (set-face-attribute 'mode-line nil :underline nil)
+         (set-face-attribute 'mode-line-inactive nil :underline nil)
 
-	 (let ((background (face-foreground 'font-lock-negation-char-face))
-	       (foreground (face-background 'default)))
-	   (set-face-attribute 'mode-line-highlight nil
-			       :foreground foreground
-			       :background background
-			       :overline background
-			       :box (list :line-width 1
-					  :color background)))))
+         (let ((background (face-foreground 'font-lock-negation-char-face))
+               (foreground (face-background 'default)))
+           (set-face-attribute 'mode-line-highlight nil
+                               :foreground foreground
+                               :background background
+                               :overline background
+                               :box (list :line-width 1
+                                          :color background)))))
 
 (use-package hl-line                    ; Highlight the current line
   :init (global-hl-line-mode 1))
@@ -142,27 +142,27 @@ symbols, emojis, greek letters, as well as fall backs for."
   :ensure t
   :init (which-key-mode)
   :config (setq which-key-idle-delay 0.4
-		which-key-popup-type 'side-window
-		which-key-side-window-location 'right
-		which-key-side-window-max-width 0.33
-		which-key-side-window-max-height 0.25
-		which-key-key-replacement-alist
-		'(("<\\([[:alnum:]-]+\\)>" . "\\1")
-		  ("up"                    . "↑")
-		  ("right"                 . "→")
-		  ("down"                  . "↓")
-		  ("left"                  . "←")
-		  ("DEL"                   . "⌫")
-		  ("deletechar"            . "⌦")
-		  ("RET"                   . "⏎"))
-		which-key-description-replacement-alist
-		'(("Prefix Command" . "prefix")
-		  ("\\`\\?\\?\\'"   . "λ")
-		  ;; Remove my personal prefix from all bindings, since it's
-		  ;; only there to avoid name clashes, but doesn't add any value
-		  ;; at all
-		  ("otann-"     . "")))
-  :diminish (which-key-mode . "Ⓚ"))
+                which-key-popup-type 'side-window
+                which-key-side-window-location 'right
+                which-key-side-window-max-width 0.33
+                which-key-side-window-max-height 0.25
+                which-key-key-replacement-alist
+                '(("<\\([[:alnum:]-]+\\)>" . "\\1")
+                  ("up"                    . "↑")
+                  ("right"                 . "→")
+                  ("down"                  . "↓")
+                  ("left"                  . "←")
+                  ("DEL"                   . "⌫")
+                  ("deletechar"            . "⌦")
+                  ("RET"                   . "⏎"))
+                which-key-description-replacement-alist
+                '(("Prefix Command" . "prefix")
+                  ("\\`\\?\\?\\'"   . "λ")
+                  ;; Remove my personal prefix from all bindings, since it's
+                  ;; only there to avoid name clashes, but doesn't add any value
+                  ;; at all
+                  ("otann-"     . "")))
+  :diminish which-key-mode)
 
 ;; "When several buffers visit identically-named files,
 ;; Emacs must give the buffers distinct names. The usual method

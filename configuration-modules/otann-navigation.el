@@ -86,7 +86,8 @@
 ;         ("C-c w d" . otann-toggle-current-window-dedication)
 ;         ("C-c w b" . otann-switch-to-minibuffer-window)))
 
-(use-package window-numbering           ; Fast switching between windows
+;; Fast switching between windows
+(use-package window-numbering
   :demand t
   :config (progn
 	    (window-numbering-mode)
@@ -103,17 +104,22 @@
 (use-package neotree
   :ensure t
   :bind (("C-c f t" . neotree-toggle))
-  :config (setq neo-theme 'ascii
-		neo-window-width 32
-		neo-create-file-auto-open t
-		neo-banner-message nil
-		neo-show-updir-line nil
-		neo-mode-line-type 'neotree
-		neo-smart-open t
-		neo-dont-be-alone t
-		neo-persist-show nil
-		neo-show-hidden-files t
-		neo-auto-indent-point t))
+  :config (progn
+	    (bind-key "r" 'neotree-change-root neotree-mode-map)
+	    (bind-key "<left>" 'neotree-select-up-node neotree-mode-map)
+	    (bind-key "<right>" 'neotree-select-down-node neotree-mode-map)
+	    (setq neo-theme 'ascii
+		  neo-window-width 32
+		  neo-create-file-auto-open t
+		  neo-banner-message nil
+		  neo-show-updir-line nil
+		  neo-mode-line-type 'neotree
+		  neo-smart-open t
+		  neo-dont-be-alone t
+		  neo-persist-show nil
+		  neo-show-hidden-files t
+		  neo-auto-indent-point t
+		  neo-keymap-style 'concise)))
 
 ;; Store more history
 ; Never use dialogs for minibuffer input
@@ -213,7 +219,7 @@
 ;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
 (defun rename-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME."
-  (interactive "sNew name: ")
+  (interactive "New name: ")
   (let ((name (buffer-name))
 	(filename (buffer-file-name)))
     (if (not filename)

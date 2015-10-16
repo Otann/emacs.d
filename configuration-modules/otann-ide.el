@@ -16,83 +16,119 @@
 
 ;; Clean up trailing whitespaces on file save
 (add-hook 'before-save-hook 'whitespace-cleanup)
+(setq-default indent-tabs-mode nil)
 
-;;; Paired delimiters - Parenthesis editing and balancing
+;; Use delight to set prefereed names for major modes
+(use-package delight
+  :ensure t
+  :demand t)
+
+;; Paired delimiters - Parenthesis editing and balancing
 (use-package smartparens
+;  :disabled t
   :ensure t
   :init (progn (smartparens-global-mode)
-	       (show-smartparens-global-mode)
-	       ;; make mode autoload with certain modes
-	       (dolist (hook '(inferior-emacs-lisp-mode-hook
-			       emacs-lisp-mode-hook))
-		       (add-hook hook #'smartparens-strict-mode)))
-  :config (progn (setq sp-autoskip-closing-pair 'always
-		       ;; Don't kill entire symbol on C-k
-		       sp-hybrid-kill-entire-symbol nil)
-		 (let ((map smartparens-mode-map))
-		   ;; Movement and navigation
-		   (define-key map (kbd "C-M-f") #'sp-forward-sexp)
-		   (define-key map (kbd "C-M-b") #'sp-backward-sexp)
-		   (define-key map (kbd "C-M-u") #'sp-backward-up-sexp)
-		   (define-key map (kbd "C-M-d") #'sp-down-sexp)
-		   (define-key map (kbd "C-M-p") #'sp-backward-down-sexp)
-		   (define-key map (kbd "C-M-n") #'sp-up-sexp)
-		   ;; Deleting and killing
-		   (define-key map (kbd "C-M-k") #'sp-kill-sexp)
-		   (define-key map (kbd "C-M-w") #'sp-copy-sexp)
-		   ;; Depth changing
-		   (define-key map (kbd "C-c k S") #'sp-splice-sexp)
-		   (define-key map (kbd "C-c k r") #'sp-splice-sexp-killing-around)
-		   (define-key map (kbd "C-c k <up>") #'sp-splice-sexp-killing-backward)
-		   (define-key map (kbd "C-c k <down>") #'sp-splice-sexp-killing-forward)
-		   (define-key map (kbd "C-c k ?") #'sp-convolute-sexp)
-		   ;; Barfage & Slurpage
-		   (define-key map (kbd "C-)") #'sp-forward-slurp-sexp)
-		   (define-key map (kbd "C-<right>") #'sp-forward-slurp-sexp)
-		   (define-key map (kbd "C-}") #'sp-forward-barf-sexp)
-		   (define-key map (kbd "C-<left>") #'sp-forward-barf-sexp)
-		   ;;
-		   (define-key map (kbd "C-(") #'sp-backward-slurp-sexp)
-		   (define-key map (kbd "C-M-<left>") #'sp-backward-slurp-sexp)
-		   (define-key map (kbd "C-{") #'sp-backward-barf-sexp)
-		   (define-key map (kbd "C-M-<right>") #'sp-backward-barf-sexp)
-		   ;; Miscellaneous commands
-		   (define-key map (kbd "C-c k s") #'sp-split-sexp)
-		   (define-key map (kbd "C-c k j") #'sp-join-sexp)
-		   (define-key map (kbd "C-M-t") #'sp-transpose-sexp)))
+               (show-smartparens-global-mode)
+               ;; make mode autoload with certain modes
+               (dolist (hook '(inferior-emacs-lisp-mode-hook
+                               emacs-lisp-mode-hook))
+                       (add-hook hook #'smartparens-strict-mode)))
+  :config (progn
+            ;; do not autoinsert ' pair if the point is preceeded by word.  This
+            ;; will handle the situation when ' is used as a contraction symbol in
+            ;; natural language.  Nil for second argument means to keep the
+            ;; original definition of closing pair.
+            (sp-pair "'" "'"
+                     :unless '(sp-point-after-word-p sp-point-before-word-p))
+
+            (sp-pair "\"" "\""
+                     :unless '(sp-point-after-word-p sp-point-before-word-p)
+                     :actions '(wrap insert autoskip))
+
+            (setq sp-autoskip-closing-pair 'always
+                  sp-autoskip-opening-pair nil
+                  ;; Don't kill entire symbol on C-k
+                  sp-hybrid-kill-entire-symbol nil
+                  sp-autoescape-string-quote nil)
+
+            (let ((map smartparens-mode-map))
+              ;; Movement and navigation
+              (define-key map (kbd "C-M-f") #'sp-forward-sexp)
+              (define-key map (kbd "C-M-b") #'sp-backward-sexp)
+              (define-key map (kbd "C-M-u") #'sp-backward-up-sexp)
+              (define-key map (kbd "C-M-d") #'sp-down-sexp)
+              (define-key map (kbd "C-M-p") #'sp-backward-down-sexp)
+              (define-key map (kbd "C-M-n") #'sp-up-sexp)
+              ;; Deleting and killing
+              (define-key map (kbd "C-M-k") #'sp-kill-sexp)
+              (define-key map (kbd "C-M-w") #'sp-copy-sexp)
+              ;; Depth changing
+              (define-key map (kbd "C-c k S") #'sp-splice-sexp)
+              (define-key map (kbd "C-c k r") #'sp-splice-sexp-killing-around)
+              (define-key map (kbd "C-c k <up>") #'sp-splice-sexp-killing-backward)
+              (define-key map (kbd "C-c k <down>") #'sp-splice-sexp-killing-forward)
+              (define-key map (kbd "C-c k ?") #'sp-convolute-sexp)
+              ;; Barfage & Slurpage
+              (define-key map (kbd "C-)") #'sp-forward-slurp-sexp)
+              (define-key map (kbd "C-<right>") #'sp-forward-slurp-sexp)
+              (define-key map (kbd "C-}") #'sp-forward-barf-sexp)
+              (define-key map (kbd "C-<left>") #'sp-forward-barf-sexp)
+              ;;
+              (define-key map (kbd "C-(") #'sp-backward-slurp-sexp)
+              (define-key map (kbd "C-M-<left>") #'sp-backward-slurp-sexp)
+              (define-key map (kbd "C-{") #'sp-backward-barf-sexp)
+              (define-key map (kbd "C-M-<right>") #'sp-backward-barf-sexp)
+              ;; Miscellaneous commands
+              (define-key map (kbd "C-c k s") #'sp-split-sexp)
+              (define-key map (kbd "C-c k j") #'sp-join-sexp)
+              (define-key map (kbd "C-M-t") #'sp-transpose-sexp)))
   :diminish (smartparens-mode . "ⓟ"))
+
+;; Good old paredit
+(use-package paredit
+  :disabled t
+  :ensure t
+  :config (progn
+            (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+            (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+            (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+            (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+            (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+            (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+            (add-hook 'scheme-mode-hook           #'enable-paredit-mode))
+  :diminish (paredit-mode . "ⓟ"))
 
 ;; On-the-fly syntax checking
 (use-package flycheck
   :ensure t
   :bind (("C-c e l" . list-flycheck-errors)
-	 ("C-c e n" . flycheck-next-error)
-	 ("C-c e p" . flycheck-previous-error)
-	 ("C-c e c" . flycheck-buffer)
-	 ("C-c e C" . flycheck-clear)
-	 ("C-c e f" . flycheck-first-error)
-	 ("C-c e w" . flycheck-copy-errors-as-kill)
-	 ("C-c t f" . flycheck-mode))
+         ("C-c e n" . flycheck-next-error)
+         ("C-c e p" . flycheck-previous-error)
+         ("C-c e c" . flycheck-buffer)
+         ("C-c e C" . flycheck-clear)
+         ("C-c e f" . flycheck-first-error)
+         ("C-c e w" . flycheck-copy-errors-as-kill)
+         ("C-c t f" . flycheck-mode))
   :init (global-flycheck-mode)
   :config (progn
-	    (setq flycheck-indication-mode 'right-fringe
-		  flycheck-standard-error-navigation nil
-		  flycheck-display-errors-function
-		  #'flycheck-display-error-messages-unless-error-list
-		  flycheck-scalastylerc "scalastyle_config.xml")
+            (setq flycheck-indication-mode 'right-fringe
+                  flycheck-standard-error-navigation nil
+                  flycheck-display-errors-function
+                  #'flycheck-display-error-messages-unless-error-list
+                  flycheck-scalastylerc "scalastyle_config.xml")
 
-	    ;; disable jshint since we prefer eslint checking
-	    (setq-default flycheck-disabled-checkers
-			  (append flycheck-disabled-checkers
-				  '(javascript-jshint)))
+            ;; disable jshint since we prefer eslint checking
+            (setq-default flycheck-disabled-checkers
+                          (append flycheck-disabled-checkers
+                                  '(javascript-jshint)))
 
-	    ;; use eslint with web-mode for jsx files
-	    (flycheck-add-mode 'javascript-eslint 'js2-mode)
+            ;; use eslint with web-mode for jsx files
+            (flycheck-add-mode 'javascript-eslint 'js2-mode)
 
-	    ;; Use italic face for checker name
-	    (set-face-attribute 'flycheck-error-list-checker-name nil
-				:inherit 'italic))
-  :diminish (flycheck-mode . "Ⓕ"))
+            ;; Use italic face for checker name
+            (set-face-attribute 'flycheck-error-list-checker-name nil
+                                :inherit 'italic))
+  :diminish flycheck-mode)
 
 ;;; WakaTime track time spent in projects
 ;; custom key supposed to be in custom.el
@@ -105,17 +141,23 @@
 ;; Subword/superword editing
 (use-package subword
   :defer t
-  :diminish subword-mode)
+  :diminish (subword-mode . "ⓢ"))
 
 ;; Install code-folding
 (use-package hideshowvis
   :ensure t
   :config (progn
-	    (hideshowvis-symbols)
-	    (set-face-attribute 'hs-face nil
-				:box nil
-				:background (face-foreground 'default)
-				:foreground (face-background 'default))))
+            (hideshowvis-symbols)
+            ;; For some reason :diminish does not work with it
+            (delight 'hs-minor-mode "ⓧ" 'hideshow) ; ¶⧒
+            (bind-key "C-c h" 'hs-toggle-hiding)
+            (set-face-attribute 'hs-face nil
+                                :box nil
+                                :background (face-foreground 'default)
+                                :foreground (face-background 'default))
+            (add-hook 'emacs-lisp-mode-hook 'hideshowvis-minor-mode)
+            (add-hook 'js2-mode 'hideshowvis-minor-mode)
+            (add-hook 'clojure-mode 'hideshowvis-minor-mode)))
 
 ;;; Autocompletion framework
 ;; Graphical (auto-)completion
@@ -123,9 +165,9 @@
   :ensure t
   :init (global-company-mode)
   :config (setq company-tooltip-align-annotations t
-		company-tooltip-flip-when-above t
-		;; Easy navigation to candidates with M-<n>
-		company-show-numbers t)
+                company-tooltip-flip-when-above t
+                ;; Easy navigation to candidates with M-<n>
+                company-show-numbers t)
   :diminish (company-mode . "ⓒ"))
 
 ;; Show help in tooltip
@@ -133,46 +175,46 @@
   :ensure t
   :defer t
   :init (with-eval-after-load 'company
-	  (company-quickhelp-mode)))
+          (company-quickhelp-mode)))
 
 ;; Sort company candidates by statistics
 (use-package company-statistics
   :ensure t
   :defer t
   :init (with-eval-after-load 'company
-	  (company-statistics-mode)))
+          (company-statistics-mode)))
 
 ;; Completion for Math symbols
 (use-package company-math
   :ensure t
   :defer t
   :init (with-eval-after-load 'company
-	  ;; Add backends for math characters
-	  (add-to-list 'company-backends 'company-math-symbols-unicode)
-	  (add-to-list 'company-backends 'company-math-symbols-latex)))
+          ;; Add backends for math characters
+          (add-to-list 'company-backends 'company-math-symbols-unicode)
+          (add-to-list 'company-backends 'company-math-symbols-latex)))
 
 ;; Helm frontend for company
 (use-package helm-company
   :ensure t
   :defer t
   :init (with-eval-after-load 'company
-	  ;; Use Company for completion
-	  (bind-key [remap completion-at-point] #'helm-company company-mode-map)
-	  (bind-key "C-:" #'helm-company company-mode-map)
-	  (bind-key "C-:" #'helm-company company-active-map)))
+          ;; Use Company for completion
+          (bind-key [remap completion-at-point] #'helm-company company-mode-map)
+          (bind-key "C-:" #'helm-company company-mode-map)
+          (bind-key "C-:" #'helm-company company-active-map)))
 
 (use-package diff-hl
   :ensure t
   :defer t
   :init (progn
-	  ;; Highlight changes to the current file in the fringe
-	  (global-diff-hl-mode)
-	  ;; Highlight changed files in the fringe of Dired
-	  (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+          ;; Highlight changes to the current file in the fringe
+          (global-diff-hl-mode)
+          ;; Highlight changed files in the fringe of Dired
+          (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
 
-	  ;; Fall back to the display margin, if the fringe is unavailable
-	  (unless (display-graphic-p)
-	    (diff-hl-margin-mode))))
+          ;; Fall back to the display margin, if the fringe is unavailable
+          (unless (display-graphic-p)
+            (diff-hl-margin-mode))))
 
 ;;; Git stuff
 ;; Git configuration mode
@@ -197,33 +239,43 @@
   :defer t
   :mode "\\.html\\'"
   :config (setq web-mode-markup-indent-offset 2
-		web-mode-css-indent-offset 2
-		web-mode-code-indent-offset 2))
+                web-mode-css-indent-offset 2
+                web-mode-code-indent-offset 2))
 
 ;; JS/ES editing
 (use-package js2-mode
   :ensure t
-  :mode "\\.\\(js\\|jsx\\)\\\\'"
-  :config (progn (setq-default js2-basic-offset 2)
-		 (setq js2-global-externs '("angular")
-		       js2-strict-missing-semi-warning nil
-		       js2-missing-semi-one-line-override nil)
+  :mode "\\.js\\'"
+  :config (progn (delight 'js2-mode "js2" :major)
 
-		 (setq-default js2-basic-offset 2)
+                 (defun my-js2-mode-hook ()
+                   (interactive)
+                   #'js2-highlight-unused-variables-mode
+                   ; Scan the file for nested code blocks
+                   (imenu-add-menubar-index)
+                   ; Enable code folding
+                   (hideshowvis-enable)
+                   ; more defaults
+                   (setq js2-global-externs '("angular")
+                         js2-strict-missing-semi-warning nil
+                         js2-missing-semi-one-line-override nil
+                         js2-indent-switch-body t)
 
-		 (defun my-js2-mode-hook ()
-		   (interactive)
-		   #'js2-highlight-unused-variables-mode
-		   ; Scan the file for nested code blocks
-		   (imenu-add-menubar-index)
-		   ; Enable code folding
-		   (hideshowvis-enable))
+                   (setq-default js2-basic-offset 2
+                               js-indent-level 2))
 
-		 (add-hook 'js2-mode-hook 'my-js2-mode-hook)))
+                 (add-hook 'js2-mode-hook 'my-js2-mode-hook)))
+
+(use-package yasnippet
+  :diminish yas-minor-mode)
+
+(use-package javascript-mode
+  :disabled t)
 
 (use-package js2-refactor
   :ensure t
-  :config (add-hook 'js2-mode-hook #'js2-refactor-mode))
+  :config (add-hook 'js2-mode-hook #'js2-refactor-mode)
+  :diminish js2-refactor-mode)
 
 (use-package json-mode
   :ensure t
@@ -240,18 +292,25 @@
   ;; Just no, dear Markdown Mode.  Don't force that bastard Github dialect upon
   ;; me!
   :mode ("\\.md\\'" . markdown-mode)
-  :config (progn ;; No filling in GFM, because line breaks are significant.
-	    (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
-	    ;; Use visual lines instead
-	    (add-hook 'gfm-mode-hook #'visual-line-mode)
-	    (add-hook 'gfm-mode-hook #'lunaryorn-whitespace-style-no-long-lines)
+  :config (progn
+            ;; Unbind MacOS movement keys
+            (unbind-key "M-<left>" markdown-mode-map)
+            (unbind-key "M-<right>" markdown-mode-map)
+            (unbind-key "M-S-<right>" markdown-mode-map)
+            (unbind-key "M-S-<left>" markdown-mode-map)
 
-	    (bind-key "C-c C-s C" #'markdown-insert-gfm-code-block markdown-mode-map)
-	    (bind-key "C-c C-s P" #'markdown-insert-gfm-code-block markdown-mode-map)
+            ;; No filling in GFM, because line breaks are significant.
+            (add-hook 'gfm-mode-hook #'turn-off-auto-fill)
+            ;; Use visual lines instead
+            (add-hook 'gfm-mode-hook #'visual-line-mode)
+            (add-hook 'gfm-mode-hook #'lunaryorn-whitespace-style-no-long-lines)
 
-	    ;; Fight my habit of constantly pressing M-q.  We should not fill in GFM
-	    ;; Mode.
-	    (bind-key "M-q" #'ignore gfm-mode-map)))
+            (bind-key "C-c C-s C" #'markdown-insert-gfm-code-block markdown-mode-map)
+            (bind-key "C-c C-s P" #'markdown-insert-gfm-code-block markdown-mode-map)
+
+            ;; Fight my habit of constantly pressing M-q.  We should not fill in GFM
+            ;; Mode.
+            (bind-key "M-q" #'ignore gfm-mode-map)))
 
 ;; Shell scripts
 (use-package sh-script
@@ -265,51 +324,67 @@
    sh-basic-offset 2))
 
 (use-package yaml-mode
-  :ensure t)
+  :ensure t
+  :config (delight 'yaml-mode "yaml " :major))
 
 ;;; Clojure
 (use-package clojure-mode
   :ensure t
   :mode "\\.\\(clj\\|cljs\\|edn\\|lein-env\\|boot\\)\\\\'"
-  :config (progn (use-package clojure-mode-extra-font-locking
-		   :ensure t)
+  :config (progn (delight 'clojure-mode "clj " :major)
 
-		 (defun my-clojure-hook ()
-		   (interactive)
-		   (setq inferior-lisp-program "lein repl")
-		   (font-lock-add-keywords
-		    nil
-		    '(("(\\(facts?\\)" (1 font-lock-keyword-face))
-		      ("(\\(background?\\)" (1 font-lock-keyword-face))))
-		   (define-clojure-indent (fact 1))
-		   ;; Enable code folding
-		   (hideshowvis-enable)
-		   ;; Deal with parenthesis
-		   #'smartparens-strict-mode)))
+                 (use-package clojure-mode-extra-font-locking
+                   :ensure t)
+
+                 (defun my-clojure-hook ()
+                   (interactive)
+                   (setq inferior-lisp-program "lein repl")
+                   (font-lock-add-keywords
+                    nil
+                    '(("(\\(facts?\\)" (1 font-lock-keyword-face))
+                      ("(\\(background?\\)" (1 font-lock-keyword-face))))
+                   (define-clojure-indent (fact 1))
+                   ;; Enable code folding
+                   (hideshowvis-enable)
+                   ;; Deal with parenthesis
+                   #'smartparens-strict-mode)
+
+                 (add-hook 'clojure-mode-hook #'my-clojure-hook)))
 
 (use-package cider
   :ensure t
-  :diminish (cider-mode . "ⓢ")
+  :diminish (cider-mode . "ⓓ")
   :config (progn
-	    ;; provides minibuffer documentation for the
-	    ;; code you're typing into the repl
-	    (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+            ;; provides minibuffer documentation for the
+            ;; code you're typing into the repl
+            (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
-	    (setq
-	     ;; go right to the REPL buffer when it's finished connecting
-	     cider-repl-pop-to-buffer-on-connect t
-	     ;;  When there's a cider error, show its buffer and switch to it
-	     cider-show-error-buffer t
-	     cider-auto-select-error-buffer t
+            (setq
+             ;; go right to the REPL buffer when it's finished connecting
+             cider-repl-pop-to-buffer-on-connect t
+             ;;  When there's a cider error, show its buffer and switch to it
+             cider-show-error-buffer t
+             cider-auto-select-error-buffer t
 
-	     ;; Where to store the cider history.
-	     cider-repl-history-file "~/.emacs.d/cider-history"
+             ;; Where to store the cider history.
+             cider-repl-history-file "~/.emacs.d/cider-history"
 
-	     ;; Wrap when navigating history.
-	     cider-repl-wrap-history t)
+             ;; Wrap when navigating history.
+             cider-repl-wrap-history t)
 
-	    (add-hook 'cider-repl-mode-hook 'smartparens-strict-mode)))
+            (add-hook 'cider-repl-mode-hook 'smartparens-strict-mode)))
 
+;; I love this one, but let's keep it hidden
+(use-package eldoc
+  :diminish eldoc-mode)
+
+(use-package terraform-mode
+  :ensure t
+  :mode ("\\.tf\\'" . terraform-mode))
+
+;(use-package foreman-mode
+;  :ensure t
+;  :mode ("\\Procfile\\'" . foreman-mode))
 
 (provide 'otann-ide)
 ;;; otann-ide.el ends here
