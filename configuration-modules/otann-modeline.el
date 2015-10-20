@@ -29,10 +29,10 @@
 ;; (let ((background (face-foreground 'font-lock-negation-char-face))
 ;;       (foreground (face-background 'default)))
 ;;   (set-face-attribute 'otann-modeline nil
-;; 		      :foreground foreground
-;; 		      :background background
-;; 		      :overline background
-;; 		      :box (list :line-width 1 :color background :style nil)))
+;;                    :foreground foreground
+;;                    :background background
+;;                    :overline background
+;;                    :box (list :line-width 1 :color background :style nil)))
 
 ;; Create variable with window number for later use
 (defvar otann-window-number-mode-line
@@ -43,7 +43,7 @@
 ;; Strip the backend name from the VC status information
 (defvar otann-vc-mode-line
   '((:eval (let ((backend (symbol-name (vc-backend (buffer-file-name)))))
-		 (substring vc-mode (+ (length backend) 2)))))
+                 (substring vc-mode (+ (length backend) 2)))))
   "Mode line format for VC Mode.")
 (put 'otann-vc-mode-line 'risky-local-variable t)
 
@@ -52,8 +52,8 @@
   "Create a mode line status text for Flycheck."
   (let* ((menu (mouse-menu-non-singleton flycheck-mode-menu-map))
          (map (make-mode-line-mouse-map
-	       'mouse-1
-	       (lambda () (interactive) (popup-menu menu))))
+               'mouse-1
+               (lambda () (interactive) (popup-menu menu))))
          (text-and-face
           (pcase flycheck-last-status-change
             (`not-checked nil)
@@ -67,14 +67,14 @@
                (cond
                 (no-errors
                  (cons (format " %s/%s " no-errors (or no-warnings 0))
-		       'flycheck-fringe-error))
-		
+                       'flycheck-fringe-error))
+
                 (no-warnings
                  (cons (format " %s " no-warnings)
-		       'flycheck-fringe-warning))
-		
+                       'flycheck-fringe-warning))
+
                 (t (cons "•" nil)))))
-	    
+
             (`interrupted (cons "x" nil))
             (`suspicious '("?" . warning)))))
     (when text-and-face
@@ -85,30 +85,30 @@
 
 ;;; Final configuration
 (setq-default mode-line-format
-	      '("%e"
-		(:propertize otann-window-number-mode-line
-			     face bold)
-		" "
-		; mode-line-mule-info
+              '("%e"
+                (:propertize otann-window-number-mode-line
+                             face bold)
+                " "
+                ; mode-line-mule-info
                 mode-line-client
                 mode-line-modified
-		" "
+                " "
                 ; mode-line-remote
                 ; mode-line-frame-identification
                 mode-line-buffer-identification
-		" "
-		mode-line-position
-		
-		(:propertize (projectile-mode projectile-mode-line)
-			     face bold)
-		(:propertize (vc-mode otann-vc-mode-line)
-			     face italic)
-		" "
-		(flycheck-mode flycheck-mode-line) ; Flycheck status
-		" "
-		mode-line-misc-info
-		mode-line-modes
-		mode-line-end-spaces))
+                " "
+                mode-line-position
+
+                (:propertize (projectile-mode projectile-mode-line)
+                             face bold)
+                (:propertize (vc-mode otann-vc-mode-line)
+                             face italic)
+                " "
+                (flycheck-mode flycheck-mode-line) ; Flycheck status
+                " "
+                mode-line-misc-info
+                mode-line-modes
+                mode-line-end-spaces))
 
 (provide 'otann-modeline)
 ;;; otann-modeline.el ends here

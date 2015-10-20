@@ -212,9 +212,11 @@
           ;; Highlight changed files in the fringe of Dired
           (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
 
-          ;; Fall back to the display margin, if the fringe is unavailable
-          (unless (display-graphic-p)
-            (diff-hl-margin-mode))))
+          ;; Highlight changes on the fly
+          (diff-hl-flydiff-mode)
+
+          ;; Prefer fringe
+          (diff-hl-margin-mode)))
 
 ;;; Git stuff
 ;; Git configuration mode

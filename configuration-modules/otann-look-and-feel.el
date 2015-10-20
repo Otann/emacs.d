@@ -33,7 +33,7 @@
                     :weight 'regular)
 (set-face-attribute 'variable-pitch nil
                     :family "Source Code Pro"
-                    :height 160
+                    :height 200
                     :weight 'regular)
 
 ;; Font setup
@@ -118,6 +118,7 @@ symbols, emojis, greek letters, as well as fall backs for."
                solarized-height-plus-4  1.0)
 
          (load-theme 'solarized-dark 'no-confirm)
+;         (load-theme 'solarized-light 'no-confirm)
 
          ;; This fixes ugly line in low contrast modeline version
          (set-face-attribute 'mode-line nil :underline nil)
