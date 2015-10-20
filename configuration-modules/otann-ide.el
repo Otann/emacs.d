@@ -193,16 +193,6 @@
           (add-to-list 'company-backends 'company-math-symbols-unicode)
           (add-to-list 'company-backends 'company-math-symbols-latex)))
 
-;; Helm frontend for company
-(use-package helm-company
-  :ensure t
-  :defer t
-  :init (with-eval-after-load 'company
-          ;; Use Company for completion
-          (bind-key [remap completion-at-point] #'helm-company company-mode-map)
-          (bind-key "C-:" #'helm-company company-mode-map)
-          (bind-key "C-:" #'helm-company company-active-map)))
-
 (use-package diff-hl
   :ensure t
   :defer t

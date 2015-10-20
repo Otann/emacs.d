@@ -60,10 +60,10 @@
 (use-package cus-edit
   :defer t
   :config (setq custom-file otann-custom-file
-		custom-buffer-done-kill nil       ; Kill when existing
-		custom-buffer-verbose-help nil    ; Remove redundant help text
-		custom-unlispify-tag-names nil    ; Show me the real variable name
-		custom-unlispify-menu-entries nil)
+                custom-buffer-done-kill nil       ; Kill when existing
+                custom-buffer-verbose-help nil    ; Remove redundant help text
+                custom-unlispify-tag-names nil    ; Show me the real variable name
+                custom-unlispify-menu-entries nil)
   :init (load otann-custom-file 'no-error 'no-message))
 
 ;;; All personal configurations is split into modules
@@ -76,16 +76,16 @@
 (use-package otann-environment-fixup
   :load-path otann-modules)
 
+;; How to move around files and projects
+(use-package otann-navigation
+  :load-path otann-modules)
+
 ;; Themes and bars
 (use-package otann-look-and-feel
   :load-path otann-modules)
 
 ;; Mode line stands out for it's complexity
 (use-package otann-modeline
-  :load-path otann-modules)
-
-;; How to move around files and projects
-(use-package otann-navigation
   :load-path otann-modules)
 
 ;; Development tools
